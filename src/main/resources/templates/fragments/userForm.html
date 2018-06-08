@@ -1,0 +1,61 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+<body>
+<div th:fragment="userForm">
+
+    <form method="post" th:action="@{/checkInUser}" th:object="${userDTO}">
+        <div class="form-group">
+            <div th:if="${validation}" class="alert alert-danger" role="alert"
+                 th:text="${validation}"></div>
+
+            <label for="userLogin">Пользователь/Логин</label>
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('userLogin')}"
+                 th:errors="*{userLogin}"></div>
+            <input type="text" class="form-control" id="userLogin" th:field="*{userLogin}" placeholder="Супер Марио"
+                   aria-describedby="loginHelp">
+            <small id="loginHelp" class="form-text text-muted">Используется в качестве имени и логина</small>
+            <input type="hidden" th:field="*{id}">
+        </div>
+
+        <div th:if="!*{id}">
+            <div class="form-group">
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('userPassword1')}"
+                     th:errors="*{userPassword1}"></div>
+                <label for="userPassword1">Пароль</label>
+                <input type="password" class="form-control" id="userPassword1" th:field="*{userPassword1}"
+                       placeholder="Секретное слово">
+            </div>
+            <div class="form-group">
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('userPassword2')}"
+                     th:errors="*{userPassword2}"></div>
+                <label for="userPassword2">Повторите Пароль</label>
+                <input type="password" class="form-control" id="userPassword2" th:field="*{userPassword2}"
+                       placeholder="Секретное слово">
+            </div>
+        </div>
+
+        <div th:if="*{id}">
+            <input type="hidden" class="form-control" id="userPassword1" th:field="*{userPassword1}">
+            <input type="hidden" class="form-control" id="userPassword1" th:field="*{userPassword2}">
+        </div>
+        <span sec:authorize="hasRole('ADMIN')">
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="activeUser" th:field="*{active}">
+            <label class="form-check-label" for="activeUser">Active</label>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="adminRole" th:field="*{admin}">
+            <label class="form-check-label" for="adminRole">Admin</label>
+        </div>
+        </span>
+        <button type="submit" class="btn btn-primary" th:if="*{id}" th:text="Сохранить">Сохранить</button>
+        <button type="submit" class="btn btn-primary" th:if="!*{id}" th:text="Создать">Создать</button>
+    </form>
+
+
+</div>
+
+</body>
+</html>

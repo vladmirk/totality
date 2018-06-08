@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User :: Totality</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <p/>
+    <br/>
+    <h3>Пользователь</h3>
+    <p/>
+
+    <div th:text="${checkInResult}" class="badge badge-pill badge-success"></div>
+
+    <div th:replace="fragments/userForm :: userForm"/>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>
