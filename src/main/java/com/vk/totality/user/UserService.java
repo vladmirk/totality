@@ -27,6 +27,10 @@ public class UserService {
         return userRepository.findUserById(id);
     }
 
+    public Iterable<User> findAll() {
+        return userRepository.findAll();
+    }
+
 //    public void createUser(UserDTO userDTO) throws ValidationException {
 //        validateUser(userDTO);
 //        User user = new User(userDTO);
@@ -88,9 +92,9 @@ public class UserService {
 //
         return (args) -> {
 //
-            User user1 = userRepository.save(new User("user1", "pass", true, USER.toString(), ADMIN.toString()));
-            User user2 = userRepository.save(new User("user2", "pass", true, USER.toString()));
-            User user3 = userRepository.save(new User("user3", "pass", false, USER.toString()));
+            User user1 = userRepository.save(new User("aaa", "pass", true, USER.toString(), ADMIN.toString()));
+            User user2 = userRepository.save(new User("bbb", "pass", true, USER.toString()));
+            User user3 = userRepository.save(new User("ccc", "pass", false, USER.toString()));
 //
 //
 //            FileCopyUtils.copy("Test file", new FileWriter(UPLOAD_ROOT + "/test"));

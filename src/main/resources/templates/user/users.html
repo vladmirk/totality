@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users :: Totality </title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <div th:if="${warnMessage}" class="alert alert-warning" role="alert" th:text="${warnMessage}"></div>
+    <form class="form-inline" method="post" th:object="${userForm}" th:action="#">
+        <div class="form-group">
+            <div class="input-group-prepend">
+                <input type="text" readonly class="form-control-plaintext" id="userLabel" value="Редактировать">
+            </div>
+            <select class="custom-select" th:field="*{loginId}">
+                <option th:each="user : ${userList}"
+                        th:value="${user.id}"
+                        th:utext="${user.userLogin}"/>
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Button</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

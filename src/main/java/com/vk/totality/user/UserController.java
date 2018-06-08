@@ -1,17 +1,18 @@
 package com.vk.totality.user;
 
-import com.vk.totality.HomeController;
 import com.vk.totality.ValidationException;
+import com.vk.totality.user.form.UserListForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.vk.totality.HomeController.ADMIN_PATH;
 
 @Controller
 public class UserController {
@@ -31,7 +32,7 @@ public class UserController {
         return USER_FOLDER + "newUser";
     }
 
-    @RequestMapping(HomeController.ADMIN_PATH + "editUser/" + ID)
+    @RequestMapping(ADMIN_PATH + "editUser/" + ID)
     public String editUser(@PathVariable Long id, Model model) {
         User user = userService.findUserById(id);
         if (user == null)
@@ -64,6 +65,31 @@ public class UserController {
         }
         return newUser(userDTO) ? "redirect:/" + USER_FOLDER + "userResult" : USER_FOLDER + "editUser";
     }
+
+    @GetMapping(ADMIN_PATH + USER_FOLDER)
+    public String users(Model model) {
+        UserListForm form = new UserListForm();
+        model.addAttribute("userForm", form);
+        List<UserDTO> userDtos = new ArrayList<>();
+        for (User u : userService.findAll()) {
+            userDtos.add(userService.toDTO(u));
+        }
+        model.addAttribute("userList", userDtos);
+        return USER_FOLDER + "users";
+    }
+
+    @PostMapping(ADMIN_PATH + USER_FOLDER)
+    public String users(UserListForm form, Model model) {
+        if (form.getLoginId() == null) {
+            model.addAttribute("warnMessage", "User Not Found");
+            return users(model);
+        }
+
+        return "redirect:" + ADMIN_PATH + "editUser/" + form.getLoginId();
+
+
+    }
+
 
     private User getUser(UserDTO userDTO) {
         if (newUser(userDTO))

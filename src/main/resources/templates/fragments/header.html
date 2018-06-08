@@ -12,16 +12,30 @@
 <body>
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
-                aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTotality"
+                aria-controls="navbarTotality" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">Totality</a>
+        <a class="navbar-brand" href="/">Totality</a>
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <div class="collapse navbar-collapse" id="navbarTotality">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0" sec:authorize="isAuthenticated()">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" th:href="@{/}">игры <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0" sec:authorize="hasRole('ADMIN')">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/admin/user/}">Пользователи <span
+                            class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
@@ -33,7 +47,7 @@
             <span sec:authorize="isAuthenticated()">
                 <span class="navbar-text"><h5 class="d-inline-flex"><span
                         sec:authentication="name"></span></h5> |
-                <a th:href="@{/logout}">Sign Out</a></span>
+                <a th:href="@{/logout}">Выход</a></span>
             </span>
         </div>
     </nav>
