@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tournaments :: Totality </title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <H3>Турниры</H3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Acive</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each=" tor : ${page.content}">
+            <th scope="row" th:text="${tor.id}"/>
+            <td th:text="${tor.name}">
+            <td th:text="${tor.active}">
+            <td>
+                <nav class="nav">
+                    <a class="nav-link active" th:href="@{edit(id=${tor.id})}">Edit</a>
+                </nav>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

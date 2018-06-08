@@ -2,16 +2,11 @@ package com.vk.totality.user;
 
 import com.vk.totality.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
 import static com.vk.totality.user.User.EMPTY_PASS;
-import static com.vk.totality.user.UserRoles.ADMIN;
-import static com.vk.totality.user.UserRoles.USER;
 
 @Service
 public class UserService {
@@ -80,31 +75,5 @@ public class UserService {
 
     }
 
-    @Bean
-    @Profile("dev")
-    CommandLineRunner setUp(final UserRepository userRepository) {
-        System.out.println("Init");
 
-
-        //        FileSystemUtils.deleteRecursively(new File(UPLOAD_ROOT));
-//        Files.createDirectories(Paths.get(UPLOAD_ROOT));
-//
-//
-        return (args) -> {
-//
-            User user1 = userRepository.save(new User("aaa", "pass", true, USER.toString(), ADMIN.toString()));
-            User user2 = userRepository.save(new User("bbb", "pass", true, USER.toString()));
-            User user3 = userRepository.save(new User("ccc", "pass", false, USER.toString()));
-//
-//
-//            FileCopyUtils.copy("Test file", new FileWriter(UPLOAD_ROOT + "/test"));
-//            imageRepository.save(new Image("test", user1));
-//
-//            FileCopyUtils.copy("Test file2", new FileWriter(UPLOAD_ROOT + "/test2"));
-//            imageRepository.save(new Image("test2", user1));
-//
-//            FileCopyUtils.copy("Test file3", new FileWriter(UPLOAD_ROOT + "/test3"));
-//            imageRepository.save(new Image("test3", user2));
-        };
-    }
 }
