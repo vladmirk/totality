@@ -1,35 +1,41 @@
 package com.vk.totality.game;
 
+import com.vk.totality.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TournamentService {
+public class GameService {
 
     private TournamentRepository tournamentRepository;
     private TeamRepository teamRepository;
+    private UserTournamentRepository userTournamentRepository;
+
 
     @Autowired
-    public TournamentService(TournamentRepository tournamentRepository, TeamRepository teamRepository) {
+    public GameService(TournamentRepository tournamentRepository, TeamRepository teamRepository, UserTournamentRepository userTournamentRepository) {
         this.tournamentRepository = tournamentRepository;
         this.teamRepository = teamRepository;
+        this.userTournamentRepository = userTournamentRepository;
     }
 
     public Page<Tournament> findAllTournaments(Pageable pageable) {
         return tournamentRepository.findAll(pageable);
     }
 
+
     public Page<Team> findAllTeams(Pageable pageable) {
         return teamRepository.findAll(pageable);
     }
 
-    public Page<Tournament> findAllActive(Pageable pageable) {
-        return tournamentRepository.findAllByActiveTrue(pageable);
+    public List<Tournament> findAllActiveTournaments() {
+        return tournamentRepository.findAllByActiveTrue();
     }
 
     public Tournament findTournament(Long id) {
@@ -51,4 +57,22 @@ public class TournamentService {
     public void update(@Valid Team team) {
         teamRepository.save(team);
     }
+
+    public List<UserTournament> findUserTournaments(User user) {
+        return userTournamentRepository.findUserTournamentByUser(user);
+    }
+
+    public Optional<UserTournament> findUserTournament(Long id) {
+        return userTournamentRepository.findById(id);
+    }
+
+    public UserTournament addTournamentToUser(User user, Tournament tournament) {
+        return userTournamentRepository.save(new UserTournament(user, tournament, true));
+    }
+
+    public UserTournament inactivateUserTournament(UserTournament userTournament) {
+        userTournament.setActive(false);
+        return userTournamentRepository.save(userTournament);
+    }
+
 }

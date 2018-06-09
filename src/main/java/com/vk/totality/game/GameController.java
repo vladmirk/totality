@@ -17,16 +17,16 @@ import java.util.Optional;
 import static com.vk.totality.HomeController.ADMIN_PATH;
 
 @Controller
-public class TournamentController {
+public class GameController {
     public static final String TOURNAMENT = "tournament";
     public static final String GAME = "game/";
     public static final String TEAMS = "teams";
 
     public static final String TOUR_FOLDER = TOURNAMENT + "/";
-    private TournamentService service;
+    private GameService service;
 
     @Autowired
-    public TournamentController(TournamentService service) {
+    public GameController(GameService service) {
         this.service = service;
     }
 

@@ -1,6 +1,9 @@
 package com.vk.totality.user;
 
 import com.vk.totality.ValidationException;
+import com.vk.totality.game.GameService;
+import com.vk.totality.game.Tournament;
+import com.vk.totality.game.UserTournament;
 import com.vk.totality.user.form.UserListForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.vk.totality.HomeController.ADMIN_PATH;
 
@@ -19,6 +23,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GameService gameService;
 
     public static final String USER_FOLDER = "user/";
     public static final String USER_PATH = "/" + USER_FOLDER;
@@ -39,9 +46,30 @@ public class UserController {
             throw new RuntimeException("User with id " + id + " not found");
 
         model.addAttribute("userDTO", userService.toDTO(user));
+        // UserTournaments
+        List<UserTournament> userTournamentList = gameService.findUserTournaments(user);
+        model.addAttribute("userTournamentList", userTournamentList);
+        List<Tournament> tournaments = gameService.findAllActiveTournaments();
+        model.addAttribute("tournamentList", removeExistingTournaments(tournaments, userTournamentList));
+
         return USER_FOLDER + "editUser";
     }
 
+    private List<Tournament> removeExistingTournaments(List<Tournament> tournaments, List<UserTournament> userTournamentList) {
+        for (UserTournament ut : userTournamentList) {
+            tournaments.remove(ut.getTournament());
+        }
+        return tournaments;
+    }
+
+    @GetMapping(ADMIN_PATH + "editUser/removeTournament")
+    public String removeUserTournament(@RequestParam("id") Long id, Model model) {
+        Optional<UserTournament> ut = gameService.findUserTournament(id);
+        if (!ut.isPresent())
+            return USER_FOLDER + "editUser";
+        UserTournament inactivateUserTournament = gameService.inactivateUserTournament(ut.get());
+        return editUser(inactivateUserTournament.getUser().getId(), model);
+    }
 
     @GetMapping(USER_PATH + "userResult")
     public String userResult() {
@@ -75,7 +103,16 @@ public class UserController {
             userDtos.add(userService.toDTO(u));
         }
         model.addAttribute("userList", userDtos);
+        // create form to add tournament
         return USER_FOLDER + "users";
+    }
+
+    @PostMapping(ADMIN_PATH + "editUser/addTournament")
+    public String addUserTournament(@RequestParam("userId") Long userId, @RequestParam("tournamentId") Long tournamentId, Model model) {
+        User user = userService.findUserById(userId);
+        Tournament tournament = gameService.findTournament(tournamentId);
+        gameService.addTournamentToUser(user, tournament);
+        return "redirect:" + ADMIN_PATH + "editUser/" + userId;
     }
 
     @PostMapping(ADMIN_PATH + USER_FOLDER)

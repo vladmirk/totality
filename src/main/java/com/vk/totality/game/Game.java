@@ -3,7 +3,8 @@ package com.vk.totality.game;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Size;
+import javax.persistence.OneToOne;
+import java.util.Date;
 
 @Entity
 public class Game {
@@ -11,17 +12,26 @@ public class Game {
     @GeneratedValue
     private Long id;
 
-    @Size(min = 3, message = "Название должно быть длиннее")
-    private String name;
-    private boolean active;
+    private Date startDate;
+
+    @OneToOne
+    private Team team1;
+
+    @OneToOne
+    private Team team2;
+
+    private int team1ResultScore = 0;
+    private int team2ResultScore = 0;
 
     public Game() {
-        setActive(true);
     }
 
-    public Game(String name, boolean active) {
-        this.name = name;
-        this.active = active;
+    public Game(Date startDate, Team team1, Team team2, int team1ResultScore, int team2ResultScore) {
+        this.startDate = startDate;
+        this.team1 = team1;
+        this.team2 = team2;
+        this.team1ResultScore = team1ResultScore;
+        this.team2ResultScore = team2ResultScore;
     }
 
     public Long getId() {
@@ -32,19 +42,43 @@ public class Game {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Team getTeam1() {
+        return team1;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTeam1(Team team1) {
+        this.team1 = team1;
     }
 
-    public boolean isActive() {
-        return active;
+    public Team getTeam2() {
+        return team2;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setTeam2(Team team2) {
+        this.team2 = team2;
+    }
+
+    public int getTeam1ResultScore() {
+        return team1ResultScore;
+    }
+
+    public void setTeam1ResultScore(int team1ResultScore) {
+        this.team1ResultScore = team1ResultScore;
+    }
+
+    public void setTeam2ResultScore(int team2ResultScore) {
+        this.team2ResultScore = team2ResultScore;
+    }
+
+    public int getTeam2ResultScore() {
+        return team2ResultScore;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 }

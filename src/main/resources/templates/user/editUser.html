@@ -21,8 +21,60 @@
     <div th:replace="fragments/userForm :: userForm"/>
 
 </div>
-<!-- /.container -->
 
+<hr/>
+<div class="container">
+
+    <H3>Турниры:</H3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Acive</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each=" ut : ${userTournamentList}">
+            <th scope="row" th:text="${ut.id}"/>
+            <td th:text="${ut.tournament.name}"/>
+            <td>
+                <input type="checkbox" value="" th:readonly="true" th:checked="${ut.active}"
+                       onclick="return false;">
+            </td>
+
+            <td>
+                <nav class="nav">
+                    <a class="nav-link active" th:href="@{removeTournament(id=${ut.id})}">Удалить</a>
+                </nav>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<hr/>
+<div class="container" th:if=="${not #lists.isEmpty(tournamentList)}
+">
+<form class="form-inline" method="post" th:action="addTournament">
+    <div class="form-group">
+        <div class="input-group-prepend">
+            <input type="text" readonly class="form-control-plaintext" id="userLabel" value="Добавить турнир">
+        </div>
+        <input type="hidden" th:value="${userDTO.id}" th:name="userId">
+        <select class="custom-select" th:name="tournamentId">
+            <option th:each="t : ${tournamentList}"
+                    th:value="${t.id}"
+                    th:utext="${t.name}"/>
+        </select>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Ok</button>
+        </div>
+    </div>
+</form>
+</div>
 <div th:replace="fragments/footer :: footer"/>
 
 </body>
