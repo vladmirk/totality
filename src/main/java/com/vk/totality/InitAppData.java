@@ -1,5 +1,7 @@
 package com.vk.totality;
 
+import com.vk.totality.game.Team;
+import com.vk.totality.game.TeamRepository;
 import com.vk.totality.game.Tournament;
 import com.vk.totality.game.TournamentRepository;
 import com.vk.totality.user.User;
@@ -17,7 +19,8 @@ public class InitAppData {
 
     @Bean
     @Profile("dev")
-    CommandLineRunner setUp(final UserRepository userRepository, final TournamentRepository tournamentRepository) {
+    CommandLineRunner setUp(final UserRepository userRepository, final TournamentRepository tournamentRepository, final TeamRepository teamRepository
+    ) {
         System.out.println("Init");
 
 
@@ -34,6 +37,10 @@ public class InitAppData {
             tournamentRepository.save(new Tournament("Фифа", true));
             tournamentRepository.save(new Tournament("Домашний", true));
             tournamentRepository.save(new Tournament("Никакой", false));
+
+            teamRepository.save(new Team("Англия", true));
+            teamRepository.save(new Team("Германия", true));
+            teamRepository.save(new Team("Россия", true));
 //
 //
 //            FileCopyUtils.copy("Test file", new FileWriter(UPLOAD_ROOT + "/test"));
