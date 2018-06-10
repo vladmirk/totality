@@ -4,30 +4,37 @@
 </head>
 <body>
 <div th:fragment="cardViewForm">
-    <div class="card text-center" id="cardGame1">
+    <div class="card text-center mt-3" id="cardGame1">
         <form id="formGame1">
             <div class="card-header text-center">
-                <div class="form-group text-center">
-                    <input type="text" class="text-center form-control date_time" id="date_time"
-                           th:value="${#dates.format(aGame.startDate, 'dd.MM.yy HH:mm')}"
-                           placeholder="dd.MM.yy hh:mm" style="width: 15ch">
-                </div>
+                <h6 th:text="${#dates.format(gameBet.game.startDate, 'dd.MM.yy HH:mm')}"></h6>
             </div>
             <div class="card-body">
                 <div align="center">
-                    <table>
-                        <tr>
-                            <td><h5 class="card-title">Англия</h5></td>
-                            <td><h5 class="card-title">&nbsp;&ndash;&nbsp;</h5></td>
-                            <td><h5 class="card-title">Германия</h5></td>
-                        </tr>
-                    </table>
+                    <form th:id="'game' + ${gameBet.game.id}" th:object="${gameBet}">
+                        <table>
+                            <tr>
+                                <td><h5 class="card-title" th:text="${gameBet.game.team1.name}"></h5></td>
+                                <td><h5 class="card-title">&nbsp;&ndash;&nbsp;</h5></td>
+                                <td><h5 class="card-title" th:text="${gameBet.game.team2.name}"></h5></td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <input type="text" class="form-control int_value" name="score1"
+                                           th:value="${gameBet.bet.score1}" style="width: 5ch">
+                                </td>
+                                <td><h5 class="card-title text-center">&nbsp;:&nbsp;</h5></td>
+                                <td align="left">
+                                    <input type="text" class="form-control int_value" name="score2"
+                                           th:value="${gameBet.bet.score2}" style="width: 5ch">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
             </div>
             <div class="card-footer">
-                <h6 class="card-t">10&nbsp;₽</h6>
-                <input type="text" class="form-control" id="gameRate1" name="gameRate" placeholder="10"
-                       value="9">
+                <h6 class="card-text"><span th:text="${gameBet.game.rate}"/>&nbsp;<span>₽</span></h6>
                 <button type="submit" class="btn btn-primary w-3" onclick="updateGame2()">OK</button>
             </div>
         </form>

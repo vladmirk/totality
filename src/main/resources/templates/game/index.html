@@ -11,13 +11,64 @@
 <div th:replace="fragments/header :: header"/>
 
 <div class="container">
-    <h3>Игры</h3>
+    <h3 class="" th:text="'Турнир ' + ${tournament.name}">Турнир </h3>
+    <div id="feedback"></div>
 
-    <P> Сюда список Игр для турнира</P>
+    <div class="card-deck">
+        <div th:each=" gameBet : ${gameBets} ">
+
+            <div th:replace="fragments/cardForm :: cardViewForm"/>
+        </div>
+    </div>
+
 
 </div>
-<!-- /.container -->
+
+
+<script>
+    function createBet(gameID) {
+        // this is the id of the form
+        var formID = '#game' + gameID;
+        var cardId = '#card' + gameID;
+        $(formID).submit(function (e) {
+
+            var url = "editGame"; // the script where you handle the form input.
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $(formID).serialize(), // serializes the form's elements.
+                success: function (data) {
+                    // display(data); // show response from the php script.
+                    $(cardId).html(data);
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                    display(e);
+                },
+                done: function (e) {
+                    console.log("DONE");
+                    // enableSearchButton(true);
+                }
+            });
+
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+        });
+    }
+
+
+    function display(data) {
+        var json = "<h4>Ajax Response</h4><pre>"
+            + JSON.stringify(data, null, 4) + "</pre>";
+        $('#feedback').html(json);
+    }
+
+
+</script>
+
+
 <div th:replace="fragments/footer :: footer"/>
+<div th:replace="fragments/footer :: dateTimeJS"/>
 
 </body>
 </html>

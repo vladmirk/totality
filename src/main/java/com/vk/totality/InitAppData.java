@@ -1,5 +1,8 @@
 package com.vk.totality;
 
+import com.vk.totality.acc.AccOperation;
+import com.vk.totality.acc.Account;
+import com.vk.totality.acc.AccountRepository;
 import com.vk.totality.game.*;
 import com.vk.totality.user.User;
 import com.vk.totality.user.UserRepository;

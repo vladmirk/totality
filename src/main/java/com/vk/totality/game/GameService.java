@@ -72,6 +72,11 @@ public class GameService {
         return userTournamentRepository.findById(id);
     }
 
+    public UserTournament findUserTournament(User user, Tournament tournament) {
+        return userTournamentRepository.findUserTournamentByUserAndTournament(user, tournament);
+    }
+
+
     public UserTournament addTournamentToUser(User user, Tournament tournament) {
         return userTournamentRepository.save(new UserTournament(user, tournament, true));
     }

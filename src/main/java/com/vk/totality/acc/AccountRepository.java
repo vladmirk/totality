@@ -1,4 +1,4 @@
-package com.vk.totality.game;
+package com.vk.totality.acc;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 

@@ -1,4 +1,6 @@
-package com.vk.totality.game;
+package com.vk.totality.acc;
+
+import com.vk.totality.game.UserTournament;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
