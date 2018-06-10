@@ -6,7 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -94,11 +97,14 @@ public class GameController {
     }
 
     @PostMapping(ADMIN_PATH + TOUR_FOLDER + ID + "/" + GAME + "editGame")
-    @ResponseBody
+//    @ResponseBody
     public String editTournamentGames(Game game, BindingResult bindingResult, Model model) {
         Game savedGame = service.save(game);
-//        model.addAttribute("tournament", t);
-//        model.addAttribute("games", service.findGamesByTournament(t));
-        return "<div>All Good</div>";
+        model.addAttribute("tournament", savedGame.getTournament());
+        Page<Team> teams = service.findAllTeams(Pageable.unpaged());
+        model.addAttribute("teams", teams);
+        model.addAttribute("aGame", savedGame);
+        return "fragments/cardForm :: cardEditForm";
     }
+
 }

@@ -60,8 +60,13 @@ public class InitAppData {
         assert (teams.size() > 1);
         assert !tournaments.isEmpty();
         Game game = new Game(tournaments.get(0), new Date(), teams.get(0), teams.get(1), BigDecimal.valueOf(10));
-        gameRepository.save(game);
-        return Arrays.asList(game);
+        game = gameRepository.save(game);
+
+        Game game2 = new Game(tournaments.get(0), new Date(), teams.get(2), teams.get(1), BigDecimal.valueOf(20));
+        game2 = gameRepository.save(game2);
+
+
+        return Arrays.asList(game, game2);
     }
 
     private List<Team> initTeams(TeamRepository teamRepository) {

@@ -12,93 +12,10 @@
 
 <div class="container">
     <H3 th:text="'Турнир ' + ${tournament.name}">Турнир </H3>
-    <div id="feedback"></div>
-
-    <div class="card-columns">
-
-        <!-- CARD DISPLAY -->
-        <div class="card text-center">
-            <div class="card-header">
-                <h5 class="card-title ">14.06.2018 10:00</h5>
-            </div>
-            <div class="card-body">
-                <div align="center">
-                    <table>
-                        <tr>
-                            <td><h5 class="card-title">Англия</h5></td>
-                            <td><h5 class="card-title">&nbsp;&ndash;&nbsp;</h5></td>
-                            <td><h5 class="card-title">Германия</h5></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="card-footer">
-                <h6 class="card-t">10&nbsp;₽</h6>
-            </div>
+    <div class="card-deck">
+        <div name="ssss" th:each=" aGame : ${games} ">
+            <div th:replace="fragments/cardForm :: cardEditForm"/>
         </div>
-
-        <!-- END CARD DISPLAY -->
-
-
-        <!-- CARD EDIT -->
-        <div th:each=" aGame : ${games} ">
-            <div class="card text-center" id="cardGame1">
-                <form th:id="'game' + ${aGame.id}" th:object="${aGame}">
-                    <input type="hidden" th:name="id" th:value="${aGame.id}">
-                    <input type="hidden" th:name="tournament" th:value="${tournament.id}">
-                    <div class="card-header text-center">
-                        <div class="form-group text-center">
-                            <input type="text" class="text-center form-control date_time" id="date_time"
-                                   th:value="${#dates.format(aGame.startDate, 'dd.MM.yy HH:mm')}"
-                                   placeholder="dd.MM.yy hh:mm" style="width: 15ch" th:name="startDate">
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div form-group-row>
-                            <select class="custom-select" name="team1">
-                                <option th:each="team : ${teams}"
-                                        th:value="${team.id}"
-                                        th:text="${team.name}"
-                                        th:selected="(${aGame.team1.id} == ${team.id})"
-                                />
-                            </select>
-                        </div>
-                        <div form-group>
-                            <p class="mt-3">VS</p>
-                        </div>
-                        <div form-group>
-                            <select class="custom-select" name="team2">
-                                <option th:each="team : ${teams}"
-                                        th:value="${team.id}"
-                                        th:text="${team.name}"
-                                        th:selected="(${aGame.team2.id} == ${team.id})"
-                                />
-                            </select>
-                        </div>
-                        <div class="input-group mb-1 mt-4">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Ставка</span>
-                            </div>
-                            <input type="text" class="form-control" name="rate" th:value="${aGame.rate}">
-                            <div class="input-group-append">
-                                <span class="input-group-text">₽</span>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary"
-                                th:onclick="'updateGame(' + ${aGame.id} + ')'">
-                            Ok
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- END CARD EDIT -->
-
-
     </div>
 </div>
 
@@ -107,6 +24,7 @@
     function updateGame(gameID) {
         // this is the id of the form
         var formID = '#game' + gameID;
+        var cardId = '#card' + gameID;
         $(formID).submit(function (e) {
 
             var url = "editGame"; // the script where you handle the form input.
@@ -116,8 +34,8 @@
                 url: url,
                 data: $(formID).serialize(), // serializes the form's elements.
                 success: function (data) {
-                    display(data); // show response from the php script.
-                    // $('formID').html(data);
+                    // display(data); // show response from the php script.
+                    $(cardId).html(data);
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);

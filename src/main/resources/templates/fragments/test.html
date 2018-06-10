@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+
+
+<span>
+
+    <!-- CARD EDIT -->
+    <div class="card text-center" id="card10">
+                    <form id="game10">
+            <div class="card-header text-center">
+
+            </div>
+            <div class="card-body">
+                <div form-group-row>
+                    <select class="custom-select" name="team1">
+                        <option value="7"
+                                selected="selected"
+                        >Англия</option>
+                        <option value="8"
+                        >Германия</option>
+                        <option value="9"
+                        >Россия</option>
+                    </select>
+                </div>
+                <div form-group>
+                    <p class="mt-3">VS</p>
+                </div>
+                <div form-group>
+                    <select class="custom-select" name="team2">
+                        <option value="7"
+                        >Англия</option>
+                        <option value="8"
+                                selected="selected"
+                        >Германия</option>
+                        <option value="9"
+                        >Россия</option>
+                    </select>
+                </div>
+                <div class="input-group mt-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Ставка</span>
+                    </div>
+                    <input type="text" class="form-control" name="rate" value="10.00">
+                    <div class="input-group-append">
+                        <span class="input-group-text">₽</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary btn-sm"
+                        onclick="updateGame(10)">
+                    Ok
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- END CARD EDIT -->
+
+        </span>
+
+
+</body>
+</html>
