@@ -109,4 +109,10 @@ public class GameController {
         return "fragments/cardForm :: cardEditForm";
     }
 
+    @GetMapping(ADMIN_PATH + TOUR_FOLDER + ID + "/" + GAME + "newGame")
+    public String newGame(@PathVariable Long id, Model model) {
+        Tournament t = service.findTournament(id);
+        Game savedGame = service.save(new Game(t));
+        return "redirect:";
+    }
 }

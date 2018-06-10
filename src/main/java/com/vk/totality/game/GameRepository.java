@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface GameRepository extends PagingAndSortingRepository<Game, Long> {
 
-    List<Game> findGameByTournament(Tournament tournament);
+    List<Game> findGameByTournamentOrderByStartDate(Tournament tournament);
 }

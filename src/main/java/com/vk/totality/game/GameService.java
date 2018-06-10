@@ -78,7 +78,7 @@ public class GameService {
     }
 
     public List<Game> findGamesByTournament(Tournament tournament) {
-        return gameRepository.findGameByTournament(tournament);
+        return gameRepository.findGameByTournamentOrderByStartDate(tournament);
     }
 
     public Game save(Game game) {

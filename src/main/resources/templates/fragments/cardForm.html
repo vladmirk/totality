@@ -36,8 +36,8 @@
 
 
 <!-- CARD EDIT -->
-<div th:fragment="cardEditForm" class="cardHolder" th:id="'card' + ${aGame.id}">
-    <div class="card text-center">
+<div th:fragment="cardEditForm" class="holder" th:id="'card' + ${aGame.id}">
+    <div class="card text-center mt-3">
         <form th:id="'game' + ${aGame.id}" th:object="${aGame}">
             <div class="card-header text-center">
                 <div class="input-group text-center">
@@ -57,7 +57,7 @@
                         <option th:each="team : ${teams}"
                                 th:value="${team.id}"
                                 th:text="${team.name}"
-                                th:selected="(${aGame.team1.id} == ${team.id})"
+                                th:selected="((${aGame.team1} !=null) and (${aGame.team1.id} == ${team.id}))"
                         />
                     </select>
                 </div>
@@ -69,7 +69,7 @@
                         <option th:each="team : ${teams}"
                                 th:value="${team.id}"
                                 th:text="${team.name}"
-                                th:selected="(${aGame.team2.id} == ${team.id})"
+                                th:selected="(${aGame.team2} != null and ${aGame.team2.id} == ${team.id})"
                         />
                     </select>
                 </div>

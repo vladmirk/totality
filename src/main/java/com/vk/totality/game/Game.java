@@ -38,6 +38,10 @@ public class Game {
         this.rate = rate;
     }
 
+    public Game(Tournament tournament) {
+        this.tournament = tournament;
+    }
+
     public Long getId() {
         return id;
     }

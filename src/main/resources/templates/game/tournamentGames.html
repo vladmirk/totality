@@ -12,7 +12,9 @@
 
 <div class="container">
     <H3 class="" th:text="'Турнир ' + ${tournament.name}">Турнир </H3>
-    <br/>
+    <p><a href="newGame">Новая игра</a></p>
+
+
     <div class="card-deck">
         <div name="ssss" th:each=" aGame : ${games} ">
             <div th:replace="fragments/cardForm :: cardEditForm"/>
