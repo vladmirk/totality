@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface UserTournamentRepository extends PagingAndSortingRepository<UserTournament, Long> {
     List<UserTournament> findUserTournamentByUser(User user);
+
+    List<UserTournament> findUserTournamentByUserAndActiveTrue(User user);
+    
+
 }
