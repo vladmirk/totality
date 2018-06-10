@@ -1,9 +1,9 @@
 package com.vk.totality.game;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -12,6 +12,8 @@ public class Game {
     @GeneratedValue
     private Long id;
 
+    @DateTimeFormat(pattern = "dd.MM.yy HH:mm")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
     @OneToOne
@@ -20,18 +22,20 @@ public class Game {
     @OneToOne
     private Team team2;
 
-    private int team1ResultScore = 0;
-    private int team2ResultScore = 0;
+    @ManyToOne
+    private Tournament tournament;
+
+    private BigDecimal rate;
 
     public Game() {
     }
 
-    public Game(Date startDate, Team team1, Team team2, int team1ResultScore, int team2ResultScore) {
+    public Game(Tournament tournament, Date startDate, Team team1, Team team2, BigDecimal rate) {
+        this.tournament = tournament;
         this.startDate = startDate;
         this.team1 = team1;
         this.team2 = team2;
-        this.team1ResultScore = team1ResultScore;
-        this.team2ResultScore = team2ResultScore;
+        this.rate = rate;
     }
 
     public Long getId() {
@@ -58,27 +62,27 @@ public class Game {
         this.team2 = team2;
     }
 
-    public int getTeam1ResultScore() {
-        return team1ResultScore;
-    }
-
-    public void setTeam1ResultScore(int team1ResultScore) {
-        this.team1ResultScore = team1ResultScore;
-    }
-
-    public void setTeam2ResultScore(int team2ResultScore) {
-        this.team2ResultScore = team2ResultScore;
-    }
-
-    public int getTeam2ResultScore() {
-        return team2ResultScore;
-    }
-
     public Date getStartDate() {
         return startDate;
     }
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public Tournament getTournament() {
+        return tournament;
+    }
+
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
+    }
+
+    public BigDecimal getRate() {
+        return rate;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
     }
 }

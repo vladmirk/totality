@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+<div th:fragment="carEditForm">
+
+    <!-- CARD EDIT -->
+    <div class="card text-center" id="cardGame1">
+        <form id="formGame1">
+            <div class="card-header text-center">
+                <div class="form-group text-center">
+                    <input type="text" class="text-center form-control date_time" id="date_time"
+                           th:value="${#dates.format(aGame.startDate, 'dd.MM.yy HH:mm')}"
+                           placeholder="dd.MM.yy hh:mm" style="width: 15ch">
+                </div>
+            </div>
+            <div class="card-body">
+                <div align="center">
+                    <table>
+                        <tr>
+                            <td><h5 class="card-title">Англия</h5></td>
+                            <td><h5 class="card-title">&nbsp;&ndash;&nbsp;</h5></td>
+                            <td><h5 class="card-title">Германия</h5></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <h6 class="card-t">10&nbsp;₽</h6>
+                <input type="text" class="form-control" id="gameRate1" name="gameRate" placeholder="10"
+                       value="9">
+                <button type="submit" class="btn btn-primary" onclick="updateGame2()">OK</button>
+
+            </div>
+        </form>
+    </div>
+    <!-- END CARD EDIT -->
+
+
+</div>
+
+</body>
+</html>

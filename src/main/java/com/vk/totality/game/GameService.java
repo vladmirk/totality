@@ -16,13 +16,15 @@ public class GameService {
     private TournamentRepository tournamentRepository;
     private TeamRepository teamRepository;
     private UserTournamentRepository userTournamentRepository;
+    private GameRepository gameRepository;
 
 
     @Autowired
-    public GameService(TournamentRepository tournamentRepository, TeamRepository teamRepository, UserTournamentRepository userTournamentRepository) {
+    public GameService(TournamentRepository tournamentRepository, TeamRepository teamRepository, UserTournamentRepository userTournamentRepository, final GameRepository gameRepository) {
         this.tournamentRepository = tournamentRepository;
         this.teamRepository = teamRepository;
         this.userTournamentRepository = userTournamentRepository;
+        this.gameRepository = gameRepository;
     }
 
     public Page<Tournament> findAllTournaments(Pageable pageable) {
@@ -73,6 +75,14 @@ public class GameService {
     public UserTournament inactivateUserTournament(UserTournament userTournament) {
         userTournament.setActive(false);
         return userTournamentRepository.save(userTournament);
+    }
+
+    public List<Game> findGamesByTournament(Tournament tournament) {
+        return gameRepository.findGameByTournament(tournament);
+    }
+
+    public Game save(Game game) {
+        return gameRepository.save(game);
     }
 
 }

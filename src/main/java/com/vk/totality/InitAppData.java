@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -23,7 +24,7 @@ public class InitAppData {
     @Profile("dev")
     CommandLineRunner setUp(final UserRepository userRepository, final TournamentRepository tournamentRepository,
                             final TeamRepository teamRepository, final GameRepository gameRepository,
-                            final UserTournamentRepository userTournamentRepository) {
+                            final UserTournamentRepository userTournamentRepository, final AccountRepository accountRepository) {
         System.out.println("Init");
 
 
@@ -36,21 +37,17 @@ public class InitAppData {
             List<User> users = initUsers(userRepository);
             List<Tournament> tournaments = initTournaments(tournamentRepository);
             List<Team> teams = initTeams(teamRepository);
-            List<Game> games = initGames(gameRepository, teams);
+            List<Game> games = initGames(gameRepository, tournaments, teams);
             List<UserTournament> userTournaments = initUserTournaments(userTournamentRepository, users, tournaments);
 
-
-            //
-//
-//            FileCopyUtils.copy("Test file", new FileWriter(UPLOAD_ROOT + "/test"));
-//            imageRepository.save(new Image("test", user1));
-//
-//            FileCopyUtils.copy("Test file2", new FileWriter(UPLOAD_ROOT + "/test2"));
-//            imageRepository.save(new Image("test2", user1));
-//
-//            FileCopyUtils.copy("Test file3", new FileWriter(UPLOAD_ROOT + "/test3"));
-//            imageRepository.save(new Image("test3", user2));
+            initUserAccount(accountRepository, userTournaments);
         };
+    }
+
+    private void initUserAccount(AccountRepository accountRepository, List<UserTournament> userTournaments) {
+        assert !userTournaments.isEmpty();
+
+        accountRepository.save(new Account(userTournaments.get(0), new BigDecimal(200), AccOperation.CASH_IN, new Date()));
     }
 
     private List<UserTournament> initUserTournaments(UserTournamentRepository repo, List<User> users, List<Tournament> tournaments) {
@@ -59,9 +56,10 @@ public class InitAppData {
         return Arrays.asList(repo.save(new UserTournament(users.get(0), tournaments.get(0), true)));
     }
 
-    private List<Game> initGames(GameRepository gameRepository, List<Team> teams) {
+    private List<Game> initGames(GameRepository gameRepository, List<Tournament> tournaments, List<Team> teams) {
         assert (teams.size() > 1);
-        Game game = new Game(new Date(), teams.get(0), teams.get(1), 3, 4);
+        assert !tournaments.isEmpty();
+        Game game = new Game(tournaments.get(0), new Date(), teams.get(0), teams.get(1), BigDecimal.valueOf(10));
         gameRepository.save(game);
         return Arrays.asList(game);
     }

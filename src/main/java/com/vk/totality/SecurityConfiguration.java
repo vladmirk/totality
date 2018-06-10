@@ -23,7 +23,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login", " webjars/**", UserController.USER_PATH + "newUser").permitAll()
+                .antMatchers("/login", "webjars/**", UserController.USER_PATH + "newUser").permitAll()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
 //                .antMatchers("/**").hasAnyRole("USER")  // "/index", "/user/**"
                 //                .anyRequest().authenticated()
