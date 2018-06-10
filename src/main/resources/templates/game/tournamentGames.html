@@ -11,7 +11,8 @@
 <div th:replace="fragments/header :: header"/>
 
 <div class="container">
-    <H3 th:text="'Турнир ' + ${tournament.name}">Турнир </H3>
+    <H3 class="" th:text="'Турнир ' + ${tournament.name}">Турнир </H3>
+    <br/>
     <div class="card-deck">
         <div name="ssss" th:each=" aGame : ${games} ">
             <div th:replace="fragments/cardForm :: cardEditForm"/>

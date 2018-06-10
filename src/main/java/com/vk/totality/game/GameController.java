@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.Optional;
 
 import static com.vk.totality.HomeController.ADMIN_PATH;
@@ -104,6 +105,7 @@ public class GameController {
         Page<Team> teams = service.findAllTeams(Pageable.unpaged());
         model.addAttribute("teams", teams);
         model.addAttribute("aGame", savedGame);
+        model.addAttribute("gameUpdated", new Date());
         return "fragments/cardForm :: cardEditForm";
     }
 

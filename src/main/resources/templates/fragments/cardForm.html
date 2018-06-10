@@ -40,9 +40,12 @@
     <div class="card text-center">
         <form th:id="'game' + ${aGame.id}" th:object="${aGame}">
             <div class="card-header text-center">
-                <div class="form-group-row text-center">
+                <div class="input-group text-center">
                     <input type="hidden" th:name="id" th:value="${aGame.id}">
                     <input type="hidden" th:name="tournament" th:value="${tournament.id}">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Игра</span>
+                    </div>
                     <input type="text" class="text-center form-control date_time" id="date_time"
                            th:value="${#dates.format(aGame.startDate, 'dd.MM.yy HH:mm')}"
                            placeholder="dd.MM.yy hh:mm" style="width: 15ch" th:name="startDate">
@@ -81,10 +84,18 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary btn-sm"
-                        th:onclick="'updateGame(' + ${aGame.id} + ')'">
-                    Ok
-                </button>
+                <div class="row">
+                    <div class="col-md-10">
+                        <small id="submitHelp" class="form-text text-muted" th:if="${gameUpdated}"
+                               th:text="${gameUpdated}"></small>
+                    </div>
+                    <div class="col-md-2 ml-auto">
+                        <button type="submit" class="btn btn-primary btn-sm"
+                                th:onclick="'updateGame(' + ${aGame.id} + ')'" aria-describedby="submitHelp">
+                            Ok
+                        </button>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
