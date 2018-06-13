@@ -11,10 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.vk.totality.game.GameController.GAME;
 
@@ -102,6 +105,22 @@ public class HomeController {
         }
 
         return gameBets;
+    }
+
+    @PostMapping("/" + ID + "/" + GAME + "setBet")
+    public String setBet(Bet bet, Model model) {
+        Optional<Bet> found = betService.findById(bet.getId());
+        if (!found.isPresent())
+            throw new RuntimeException("Нет такой ставки " + bet.toString());
+        Bet existing = found.get();
+        existing.setScore1(bet.getScore1());
+        existing.setScore2(bet.getScore2());
+        existing.setBetDate(new Date());
+        existing = betService.save(existing);
+
+        GameBet gb = new GameBet(existing, existing.getGame());
+        model.addAttribute("gameBet", gb);
+        return "fragments/cardForm :: cardViewForm";
     }
 
 }
