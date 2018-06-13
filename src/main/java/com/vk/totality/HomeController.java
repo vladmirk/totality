@@ -112,13 +112,17 @@ public class HomeController {
         Optional<Bet> found = betService.findById(bet.getId());
         if (!found.isPresent())
             throw new RuntimeException("Нет такой ставки " + bet.toString());
-        Bet existing = found.get();
-        existing.setScore1(bet.getScore1());
-        existing.setScore2(bet.getScore2());
-        existing.setBetDate(new Date());
-        existing = betService.save(existing);
 
+        Bet existing = found.get();
         GameBet gb = new GameBet(existing, existing.getGame());
+
+        if (gb.getCanBet()) {
+            existing.setScore1(bet.getScore1());
+            existing.setScore2(bet.getScore2());
+            existing.setBetDate(new Date());
+            existing = betService.save(existing);
+        }
+
         model.addAttribute("gameBet", gb);
         return "fragments/cardForm :: cardViewForm";
     }

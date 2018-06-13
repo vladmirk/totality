@@ -25,12 +25,14 @@
                                 <input type="hidden" th:name="id" th:value="${gameBet.bet.id}">
 
                                 <input type="text" class="form-control int_value" name="score1"
-                                       th:value="${gameBet.bet.score1}" style="width: 5ch">
+                                       th:value="${gameBet.bet.score1}" style="width: 5ch"
+                                       th:readonly="!${gameBet.canBet}">
                             </td>
                             <td><h5 class="card-title text-center">&nbsp;:&nbsp;</h5></td>
                             <td align="left">
                                 <input type="text" class="form-control int_value" name="score2"
-                                       th:value="${gameBet.bet.score2}" style="width: 5ch">
+                                       th:value="${gameBet.bet.score2}" style="width: 5ch"
+                                       th:readonly="!${gameBet.canBet}">
                             </td>
                         </tr>
                     </table>
@@ -44,8 +46,8 @@
                         <small id="submitHelp" class="form-text text-muted" th:if="${gameBet.bet.betDate}"
                                th:text="${#dates.format(gameBet.bet.betDate, 'dd.MM.yy HH:mm:ss')}"></small>
                     </div>
-                    <div class="col-xs-2 ml-auto">
-                        <button type="submit" class="btn btn-primary" th:if="${gameBet.canBet}"
+                    <div th:class="'col-xs-2 ml-auto ' + !${gameBet.canBet}">
+                        <button type="submit" class="btn btn-primary btn-sm" th:disabled="!${gameBet.canBet}"
                                 th:onclick="'createBet(' + ${gameBet.game.id} + ')'">
                             OK
                         </button>
