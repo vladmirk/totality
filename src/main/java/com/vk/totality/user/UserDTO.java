@@ -20,7 +20,7 @@ public class UserDTO {
 
     public UserDTO() {
         setActive(false);
-        setAdmin(true);
+        setAdmin(false);
     }
 
 
