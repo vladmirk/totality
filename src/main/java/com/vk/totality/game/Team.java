@@ -14,6 +14,7 @@ public class Team {
     @Size(min = 3, message = "Название должно быть длиннее")
     private String name;
     private boolean active;
+    private String mnemonic;
 
     public Team() {
         setActive(true);
@@ -46,5 +47,13 @@ public class Team {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getMnemonic() {
+        return mnemonic;
+    }
+
+    public void setMnemonic(String mnemonic) {
+        this.mnemonic = mnemonic;
     }
 }
