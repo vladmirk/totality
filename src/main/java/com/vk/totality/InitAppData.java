@@ -24,6 +24,28 @@ import static com.vk.totality.user.UserRoles.USER;
 public class InitAppData {
 
     @Bean
+    @Profile("production")
+    CommandLineRunner setUpProduction(final UserRepository userRepository, final TournamentRepository tournamentRepository,
+                                      final TeamRepository teamRepository, final GameRepository gameRepository,
+                                      final UserTournamentRepository userTournamentRepository, final AccountRepository accountRepository) {
+        System.out.println("Init Production");
+        return (args) -> {
+
+            String adminName = "admin";
+            User admin = userRepository.findUserByUserLogin(adminName);
+
+            if (admin == null) {
+                userRepository.save(new User(adminName, "pass", true, USER.toString(), ADMIN.toString()));
+            } else {
+                if (!admin.getActive())
+                    admin.setActive(true);
+                userRepository.save(admin);
+            }
+        };
+    }
+
+
+    @Bean
     @Profile("dev")
     CommandLineRunner setUp(final UserRepository userRepository, final TournamentRepository tournamentRepository,
                             final TeamRepository teamRepository, final GameRepository gameRepository,
