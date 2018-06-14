@@ -35,7 +35,7 @@ public class InitAppData {
             User admin = userRepository.findUserByUserLogin(adminName);
 
             if (admin == null) {
-                userRepository.save(new User(adminName, "pass", true, USER.toString(), ADMIN.toString()));
+                userRepository.save(new User(adminName, "Guardian$", true, USER.toString(), ADMIN.toString()));
             } else {
                 if (!admin.getActive())
                     admin.setActive(true);
