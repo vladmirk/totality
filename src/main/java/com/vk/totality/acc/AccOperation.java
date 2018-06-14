@@ -23,7 +23,7 @@ public enum AccOperation {
 
     ////////////////////
 
-    enum type {
+    public enum type {
         D("Replenishment"), C("Extraction");
         private String desc;
 

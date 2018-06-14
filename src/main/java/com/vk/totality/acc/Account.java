@@ -14,6 +14,8 @@ public class Account {
 
     @ManyToOne
     private UserTournament userTournament;
+    //    @NotNull
+//    @NotBlank
     private BigDecimal amount;
     @Enumerated(EnumType.STRING)
     private AccOperation accOperation;
@@ -51,6 +53,7 @@ public class Account {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+        validate();
     }
 
     public AccOperation getAccOperation() {
@@ -59,6 +62,7 @@ public class Account {
 
     public void setAccOperation(AccOperation accOperation) {
         this.accOperation = accOperation;
+        validate();
     }
 
     public Date getEventDate() {
@@ -67,5 +71,14 @@ public class Account {
 
     public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
+    }
+
+    private void validate() {
+        if (getAccOperation() == null || getAmount() == null) return;
+
+        if (AccOperation.type.D.equals(getAccOperation().getDebitCredit()))
+            amount = getAmount().abs();
+        else
+            amount = getAmount().abs().negate();
     }
 }

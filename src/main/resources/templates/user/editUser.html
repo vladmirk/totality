@@ -50,7 +50,7 @@
                         <a class="nav-link" th:href="@{removeTournament(id=${ut.id})}">Удалить</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{#}">Баланс</a>
+                        <a class="nav-link" th:href="@{'/admin/acc/userTournament/' + ${ut.id}}">Баланс</a>
                     </li>
                 </ul>
             </td>

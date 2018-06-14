@@ -1,7 +1,7 @@
 package com.vk.totality;
 
+import com.vk.totality.acc.AccService;
 import com.vk.totality.acc.Bet;
-import com.vk.totality.acc.BetService;
 import com.vk.totality.game.*;
 import com.vk.totality.user.User;
 import com.vk.totality.user.UserService;
@@ -11,13 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static com.vk.totality.game.GameController.GAME;
 
@@ -28,12 +25,12 @@ public class HomeController {
     public static final String ADMIN_PATH = "/admin/";
     private GameService gameService;
     private UserService userService;
-    private BetService betService;
+    private AccService accService;
 
-    public HomeController(GameService gameService, UserService userService, BetService betService) {
+    public HomeController(GameService gameService, UserService userService, AccService accService) {
         this.gameService = gameService;
         this.userService = userService;
-        this.betService = betService;
+        this.accService = accService;
     }
 
     @GetMapping({"/", "/index.html"})
@@ -100,32 +97,13 @@ public class HomeController {
     private List<GameBet> getGameBetList(List<Game> games, UserTournament userTournament) {
         List<GameBet> gameBets = new ArrayList<>();
         for (Game game : games) {
-            Bet bet = betService.findOrCreateBet(game, userTournament);
+            Bet bet = accService.findOrCreateBet(game, userTournament);
             gameBets.add(new GameBet(bet, game));
         }
 
         return gameBets;
     }
 
-    @PostMapping("/" + ID + "/" + GAME + "setBet")
-    public String setBet(Bet bet, Model model) {
-        Optional<Bet> found = betService.findById(bet.getId());
-        if (!found.isPresent())
-            throw new RuntimeException("Нет такой ставки " + bet.toString());
-
-        Bet existing = found.get();
-        GameBet gb = new GameBet(existing, existing.getGame());
-
-        if (gb.getCanBet()) {
-            existing.setScore1(bet.getScore1());
-            existing.setScore2(bet.getScore2());
-            existing.setBetDate(new Date());
-            existing = betService.save(existing);
-        }
-
-        model.addAttribute("gameBet", gb);
-        return "fragments/cardForm :: cardViewForm";
-    }
 
 }
 
