@@ -6,4 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface BetRepository extends PagingAndSortingRepository<Bet, Long> {
     Bet findBetByUserTournamentAndGame(UserTournament userTournament, Game game);
+
 }

@@ -1,16 +1,19 @@
 package com.vk.totality.game;
 
 import com.vk.totality.acc.Bet;
+import com.vk.totality.acc.BetResultItem;
 
 import java.util.Date;
 
 public class GameBet {
     private Bet bet;
     private Game game;
+    private BetResultItem betResultItem;
 
-    public GameBet(Bet bet, Game game) {
+    public GameBet(Bet bet, Game game, BetResultItem betResultItem) {
         this.bet = bet;
         this.game = game;
+        this.betResultItem = betResultItem;
     }
 
     public Bet getBet() {
@@ -38,4 +41,11 @@ public class GameBet {
         this.game = game;
     }
 
+    public BetResultItem getBetResultItem() {
+        return betResultItem;
+    }
+
+    public void setBetResultItem(BetResultItem betResultItem) {
+        this.betResultItem = betResultItem;
+    }
 }

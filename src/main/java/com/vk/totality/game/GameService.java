@@ -68,6 +68,11 @@ public class GameService {
         return userTournamentRepository.findUserTournamentByUserAndActiveTrue(user);
     }
 
+    public List<UserTournament> findUserTournaments(Tournament tournament) {
+        return userTournamentRepository.findUserTournamentByTournamentAndActiveTrue(tournament);
+    }
+
+
     public Optional<UserTournament> findUserTournament(Long id) {
         return userTournamentRepository.findById(id);
     }

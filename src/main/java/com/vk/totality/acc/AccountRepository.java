@@ -9,4 +9,6 @@ public interface AccountRepository extends PagingAndSortingRepository<Account, L
 
     List<Account> findAccountByUserTournamentOrderByEventDateDesc(UserTournament ut);
 
+    Integer removeAccountByBetResultItem(BetResultItem betResultItem);
+
 }

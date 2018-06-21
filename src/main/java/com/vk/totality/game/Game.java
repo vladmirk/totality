@@ -27,6 +27,10 @@ public class Game {
 
     private BigDecimal rate;
 
+    @OneToOne(mappedBy = "game")
+    private BetResult betResult;
+
+
     public Game() {
     }
 
@@ -88,5 +92,13 @@ public class Game {
 
     public void setRate(BigDecimal rate) {
         this.rate = rate;
+    }
+
+    public BetResult getBetResult() {
+        return betResult;
+    }
+
+    public void setBetResult(BetResult betResult) {
+        this.betResult = betResult;
     }
 }

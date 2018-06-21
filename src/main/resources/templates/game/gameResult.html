@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Game Result </title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <H3>Игра</H3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Дата</th>
+            <th scope="col">Матч</th>
+            <th scope="col">Счет</th>
+            <th scope="col">Ставка</th>
+            <th scope="col">Кто</th>
+            <th scope="col">Выигрыш</th>
+            <th scope="col">Тип</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--<tr th:each=" team : ${teamPage.content}">-->
+        <!--<th scope="row" th:text="${team.id}"/>-->
+        <!--<td th:text="${team.name}">-->
+        <!--<td th:text="${team.active}">-->
+        <!--<td>-->
+        <!--<nav class="nav">-->
+        <!--<a class="nav-link active" th:href="@{edit(id=${team.id})}">Edit</a>-->
+        <!--</nav>-->
+
+        <!--</td>-->
+        <!--</tr>-->
+        </tbody>
+    </table>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

@@ -41,7 +41,7 @@ public class AccController {
             throw new RuntimeException("Нет такой ставки " + bet.toString());
 
         Bet existing = found.get();
-        GameBet gb = new GameBet(existing, existing.getGame());
+        GameBet gb = new GameBet(existing, existing.getGame(), accService.findBetResultItem(existing));
 
         if (gb.getCanBet()) {
             existing.setScore1(bet.getScore1());

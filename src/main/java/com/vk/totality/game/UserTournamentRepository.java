@@ -10,6 +10,8 @@ public interface UserTournamentRepository extends PagingAndSortingRepository<Use
 
     List<UserTournament> findUserTournamentByUserAndActiveTrue(User user);
 
+    List<UserTournament> findUserTournamentByTournamentAndActiveTrue(Tournament tournament);
+
     UserTournament findUserTournamentByUserAndTournament(User user, Tournament tournament);
 
 }

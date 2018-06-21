@@ -2,6 +2,7 @@ package com.vk.totality;
 
 import com.vk.totality.acc.AccService;
 import com.vk.totality.acc.Bet;
+import com.vk.totality.acc.BetResultItem;
 import com.vk.totality.game.*;
 import com.vk.totality.user.User;
 import com.vk.totality.user.UserService;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,11 +96,18 @@ public class HomeController {
         return GAME + "index";
     }
 
+    @GetMapping("/" + ID + "/" + GAME + "gameResult")
+    public String gameResult(@RequestParam("game") Long gameId) {
+//        Game game = gameService.
+        return GAME + "gameResult";
+    }
+
     private List<GameBet> getGameBetList(List<Game> games, UserTournament userTournament) {
         List<GameBet> gameBets = new ArrayList<>();
         for (Game game : games) {
             Bet bet = accService.findOrCreateBet(game, userTournament);
-            gameBets.add(new GameBet(bet, game));
+            BetResultItem betResultItem = accService.findBetResultItem(bet);
+            gameBets.add(new GameBet(bet, game, betResultItem));
         }
 
         return gameBets;
