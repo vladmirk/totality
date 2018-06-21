@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Game Result </title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <H3 th:text="${game}">Игра</H3>
+    <H5 th:text="${#dates.format(game.startDate, 'dd.MM.yy HH:mm')}">Дата</H5>
+
+    <h3 th:if="${game.betResult}">
+        Результат:
+        <span class="border border-info p-2 bg-success"><span
+                th:text="${game.betResult?.team1ResultScore}"></span>:<span
+                th:text="${game.betResult?.team2ResultScore}"></span></span>
+    </h3>
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">Ставка</th>
+            <th scope="col">Кто</th>
+            <th scope="col">Выигрыш</th>
+            <th scope="col">Тип</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each=" resultItem : ${betResultItems}">
+            <th scope="row" class="bg-success" th:if="${resultItem.winAmount > 0}"><span
+                    th:text="${resultItem.bet}"></span></th>
+            <th scope="row" th:if="!${resultItem.winAmount > 0}"><span th:text="${resultItem.bet}"></span></th>
+
+            <td scope="row"><span th:text="${resultItem.bet.userTournament.user}"></span></td>
+            <td scope="row"><span th:text="${resultItem.winAmount}"></span></td>
+            <td scope="row"><span th:text="${resultItem.betResultStatus}"></span></td>
+            <!--<td th:text="${team.name}">-->
+            <!--<td th:text="${team.active}">-->
+            <!--<td>-->
+            <!--<nav class="nav">-->
+            <!--<a class="nav-link active" th:href="@{edit(id=${team.id})}">Edit</a>-->
+            <!--</nav>-->
+
+            <!--</td>-->
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

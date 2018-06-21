@@ -1,5 +1,6 @@
 package com.vk.totality.game;
 
+import com.vk.totality.acc.AccService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,16 +26,18 @@ public class GameController {
     public static final String TEAMS = "teams";
 
     public static final String TOUR_FOLDER = TOURNAMENT + "/";
-    private GameService service;
+    private GameService gameService;
+    private AccService accService;
 
     @Autowired
-    public GameController(GameService service) {
-        this.service = service;
+    public GameController(GameService gameService, AccService accService) {
+        this.gameService = gameService;
+        this.accService = accService;
     }
 
     @GetMapping(ADMIN_PATH + TOUR_FOLDER)
     public ModelAndView tournament(ModelAndView model, Pageable pageable) {
-        Page<Tournament> tournaments = service.findAllTournaments(pageable);
+        Page<Tournament> tournaments = gameService.findAllTournaments(pageable);
         model.addObject("page", tournaments);
         model.setViewName(GAME + TOURNAMENT);
         return model;
@@ -42,7 +45,7 @@ public class GameController {
 
     @GetMapping(ADMIN_PATH + TOUR_FOLDER + "edit")
     public String editTournament(@RequestParam("id") Long id, Model model) {
-        Tournament t = service.findTournament(id);
+        Tournament t = gameService.findTournament(id);
         if (t != null)
             model.addAttribute("tournament", t);
         return GAME + "editTournament";
@@ -51,7 +54,7 @@ public class GameController {
     @PostMapping(ADMIN_PATH + TOUR_FOLDER + "edit")
     public String checkInTournament(@Valid Tournament tournament, BindingResult bindingResult, Model model) {
         if (!bindingResult.hasErrors()) {
-            service.update(tournament);
+            gameService.update(tournament);
             model.addAttribute("checkInResult", "Updated");
         }
         model.addAttribute("tournament", tournament);
@@ -60,7 +63,7 @@ public class GameController {
 
     @GetMapping(ADMIN_PATH + TEAMS + "/")
     public ModelAndView teams(Pageable pageable, ModelAndView model) {
-        Page<Team> teams = service.findAllTeams(pageable);
+        Page<Team> teams = gameService.findAllTeams(pageable);
         model.addObject("teamPage", teams);
         model.setViewName(GAME + TEAMS);
         return model;
@@ -69,7 +72,7 @@ public class GameController {
 
     @GetMapping(ADMIN_PATH + TEAMS + "/edit")
     public String editTeam(@RequestParam("id") Long id, Model model) {
-        Optional<Team> t = service.findTeam(id);
+        Optional<Team> t = gameService.findTeam(id);
         if (t.isPresent())
             model.addAttribute("team", t.get());
         return GAME + "editTeam";
@@ -78,7 +81,7 @@ public class GameController {
     @PostMapping(ADMIN_PATH + TEAMS + "/edit")
     public String checkInTeam(@Valid Team team, BindingResult bindingResult, Model model) {
         if (!bindingResult.hasErrors()) {
-            service.update(team);
+            gameService.update(team);
             model.addAttribute("checkInResult", "Updated");
         }
         model.addAttribute("team", team);
@@ -89,20 +92,24 @@ public class GameController {
 
     @GetMapping(ADMIN_PATH + TOUR_FOLDER + ID + "/" + GAME)
     public String tournamentGames(@PathVariable Long id, Model model) {
-        Tournament t = service.findTournament(id);
+        Tournament t = gameService.findTournament(id);
         model.addAttribute("tournament", t);
-        model.addAttribute("games", service.findGamesByTournament(t));
-        Page<Team> teams = service.findAllTeams(Pageable.unpaged());
+        model.addAttribute("games", gameService.findGamesByTournament(t));
+        Page<Team> teams = gameService.findAllTeams(Pageable.unpaged());
         model.addAttribute("teams", teams);
         return GAME + "tournamentGames";
     }
 
     @PostMapping(ADMIN_PATH + TOUR_FOLDER + ID + "/" + GAME + "editGame")
 //    @ResponseBody
-    public String editTournamentGames(Game game, BindingResult bindingResult, Model model) {
-        Game savedGame = service.save(game);
+    public String editTournamentGames(Game game, BindingResult bindingResult, ScoreResult scoreResult, Model model) {
+
+        BetResult betResult = accService.processScoreResult(game, scoreResult);
+        game.setBetResult(betResult);
+
+        Game savedGame = gameService.save(game);
         model.addAttribute("tournament", savedGame.getTournament());
-        Page<Team> teams = service.findAllTeams(Pageable.unpaged());
+        Page<Team> teams = gameService.findAllTeams(Pageable.unpaged());
         model.addAttribute("teams", teams);
         model.addAttribute("aGame", savedGame);
         model.addAttribute("gameUpdated", new Date());
@@ -111,8 +118,8 @@ public class GameController {
 
     @GetMapping(ADMIN_PATH + TOUR_FOLDER + ID + "/" + GAME + "newGame")
     public String newGame(@PathVariable Long id, Model model) {
-        Tournament t = service.findTournament(id);
-        Game savedGame = service.save(new Game(t));
+        Tournament t = gameService.findTournament(id);
+        Game savedGame = gameService.save(new Game(t));
         return "redirect:";
     }
 }

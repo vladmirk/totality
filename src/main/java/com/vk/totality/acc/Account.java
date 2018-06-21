@@ -21,14 +21,22 @@ public class Account {
     private AccOperation accOperation;
     private Date eventDate;
 
+    @ManyToOne
+    private BetResultItem betResultItem;
+
     public Account() {
     }
 
     public Account(UserTournament userTournament, BigDecimal amount, AccOperation accOperation, Date eventDate) {
         this.userTournament = userTournament;
-        this.amount = amount;
-        this.accOperation = accOperation;
+        setAmount(amount);
+        setAccOperation(accOperation);
         this.eventDate = eventDate;
+    }
+
+    public Account(UserTournament userTournament, BigDecimal amount, AccOperation accOperation, Date eventDate, BetResultItem betResultItem) {
+        this(userTournament, amount, accOperation, eventDate);
+        this.betResultItem = betResultItem;
     }
 
     public Long getId() {

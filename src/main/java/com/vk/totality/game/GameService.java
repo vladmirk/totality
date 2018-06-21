@@ -68,6 +68,11 @@ public class GameService {
         return userTournamentRepository.findUserTournamentByUserAndActiveTrue(user);
     }
 
+    public List<UserTournament> findUserTournaments(Tournament tournament) {
+        return userTournamentRepository.findUserTournamentByTournamentAndActiveTrue(tournament);
+    }
+
+
     public Optional<UserTournament> findUserTournament(Long id) {
         return userTournamentRepository.findById(id);
     }
@@ -92,6 +97,11 @@ public class GameService {
 
     public Game save(Game game) {
         return gameRepository.save(game);
+    }
+
+    public Game findGame(Long id) {
+        Optional<Game> g = gameRepository.findById(id);
+        return g.isPresent() ? g.get() : null;
     }
 
 }
