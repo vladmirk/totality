@@ -101,4 +101,12 @@ public class Game {
     public void setBetResult(BetResult betResult) {
         this.betResult = betResult;
     }
+
+    @Override
+    public String toString() {
+        if (getTeam1() == null || getTeam2() == null)
+            return "" + getId();
+
+        return getTeam1().toString() + " - " + getTeam2().toString();
+    }
 }

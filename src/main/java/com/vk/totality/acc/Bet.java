@@ -81,4 +81,12 @@ public class Bet {
     public void setGame(Game game) {
         this.game = game;
     }
+
+    @Override
+    public String toString() {
+        if (getScore1() == null || getScore2() == null)
+            return "-";
+
+        return getScore1() + ":" + getScore2();
+    }
 }

@@ -99,4 +99,9 @@ public class GameService {
         return gameRepository.save(game);
     }
 
+    public Game findGame(Long id) {
+        Optional<Game> g = gameRepository.findById(id);
+        return g.isPresent() ? g.get() : null;
+    }
+
 }

@@ -96,8 +96,12 @@ public class AccService {
         return betResult;
     }
 
+    public List<BetResultItem> findBetResultItems(BetResult betResult) {
+        return betResultItemRepository.findBetResultItemsByBetResult(betResult);
+    }
+
     private void removeOldTransactions(BetResult betResult) {
-        List<BetResultItem> resultItems = betResultItemRepository.findBetResultItemsByBetResult(betResult);
+        List<BetResultItem> resultItems = findBetResultItems(betResult);
         for (BetResultItem i : resultItems)
             accountRepository.removeAccountByBetResultItem(i);
         betResultItemRepository.removeBetResultItemsByBetResult(betResult);

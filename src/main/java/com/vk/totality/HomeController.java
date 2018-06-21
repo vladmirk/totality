@@ -97,8 +97,14 @@ public class HomeController {
     }
 
     @GetMapping("/" + ID + "/" + GAME + "gameResult")
-    public String gameResult(@RequestParam("game") Long gameId) {
-//        Game game = gameService.
+    public String gameResult(@RequestParam("game") Long gameId, Model model) {
+        Game game = gameService.findGame(gameId);
+        if (game == null) return "redirect:/";
+
+        List<BetResultItem> betResultItems = accService.findBetResultItems(game.getBetResult());
+        model.addAttribute("betResultItems", betResultItems);
+        model.addAttribute("game", game);
+
         return GAME + "gameResult";
     }
 

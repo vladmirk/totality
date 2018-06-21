@@ -56,4 +56,9 @@ public class Team {
     public void setMnemonic(String mnemonic) {
         this.mnemonic = mnemonic;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
