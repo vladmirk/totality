@@ -12,8 +12,13 @@
 
 <div class="container">
 
-    <p>Первая страничка</p>
-    <P> Сюда список Турниров</P>
+    <h3 class="mb-5">Ваши турниры</h3>
+
+    <div class="list-group">
+        <a th:each=" ut : ${userTournaments}" class="list-group-item list-group-item-action"
+           th:href="'/' + ${ut.getTournament().getId()} + '/game/'"><span
+                th:text="${ut.getTournament().getName()}"/> </a>
+    </div>
 
 </div>
 <!-- /.container -->

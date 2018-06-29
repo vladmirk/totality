@@ -63,7 +63,8 @@
                 <div class="row ">
                     <div class="col-xs-10">
                         <a th:href="@{gameResult(game=${gameBet.game.id})}">
-                            <p class="card-title" th:text="${gameBet.betResultItem.betResultStatus}"></p>
+                            <span class="card-title" th:text="${gameBet.betResultItem.betResultStatus}">
+                            </span>&nbsp;&nbsp;(<span th:text="${gameBet.betResultItem.winAmount}"/>)
                         </a>
                     </div>
                 </div>
