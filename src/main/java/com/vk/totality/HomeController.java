@@ -42,12 +42,15 @@ public class HomeController {
 
         List<UserTournament> tournaments = gameService.findUserActiveTournaments(user());
         if (tournaments.isEmpty()) {
-            model.addAttribute("Какая печаль! Вы не учавсвуете ни в одном турнире!");
+            model.addAttribute("Какая печаль! Вы не участвуете ни в одном турнире!");
             return "index";
         }
 
         if (tournaments.size() == 1)
             return "redirect:/" + tournaments.get(0).getTournament().getId() + "/game/";
+
+        List<UserTournament> userTournaments = gameService.findUserTournaments(user());
+        model.addAttribute("userTournaments", userTournaments);
 
         return "index";
     }
