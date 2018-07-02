@@ -14,12 +14,23 @@
     <H3 th:text="${game}">Игра</H3>
     <H5 th:text="${#dates.format(game.startDate, 'dd.MM.yy HH:mm')}">Дата</H5>
 
-    <h3 th:if="${game.betResult}">
-        Результат:
-        <span class="border border-info p-2 bg-success"><span
-                th:text="${game.betResult?.team1ResultScore}"></span>:<span
-                th:text="${game.betResult?.team2ResultScore}"></span></span>
-    </h3>
+
+    <div class="row" th:if="${game.betResult}">
+        <div class="col">
+            <h3>
+                Результат:
+                <span class="border border-info p-2 bg-success"><span
+                        th:text="${game.betResult?.team1ResultScore}"></span>:<span
+                        th:text="${game.betResult?.team2ResultScore}"></span></span>
+            </h3>
+        </div>
+        <div class="col">
+            <h3>Бюджет: <span th:text="${game.betResult?.gameBudget}"></span>
+            </h3>
+        </div>
+    </div>
+
+
     <table class="table table-striped table-sm">
         <thead>
         <tr>
@@ -37,7 +48,10 @@
 
             <td scope="row"><span th:text="${resultItem.bet.userTournament.user}"></span></td>
             <td scope="row"><span th:text="${resultItem.winAmount}"></span></td>
-            <td scope="row"><span th:text="${resultItem.betResultStatus}"></span></td>
+            <td scope="row"><span th:text="${resultItem.betResultStatus}"/><span
+                    th:if="${resultItem.betResultStatus.ratio() > 0} ">&nbsp;(<span
+                    th:text="${resultItem.betResultStatus.percent()} "/>%)</span>
+            </td>
             <!--<td th:text="${team.name}">-->
             <!--<td th:text="${team.active}">-->
             <!--<td>-->
