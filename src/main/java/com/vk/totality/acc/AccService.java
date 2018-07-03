@@ -207,4 +207,8 @@ public class AccService {
 
         return betResult;
     }
+
+    public List<TournamentResultItem> calcTournamentResult(Tournament tournament) {
+        return betResultItemRepository.calcTournamentResult(tournament);
+    }
 }

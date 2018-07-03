@@ -32,6 +32,10 @@ public enum BetResultStatus implements ResultStatusMatcher {
         return ratio;
     }
 
+    public Integer percent() {
+        return ratio().multiply(new BigDecimal(100)).intValue();
+    }
+
     public static List<BetResultStatus> winStatuses() {
         List<BetResultStatus> s = new ArrayList<>();
         for (BetResultStatus status : values())

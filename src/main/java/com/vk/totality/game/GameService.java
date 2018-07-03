@@ -72,6 +72,9 @@ public class GameService {
         return userTournamentRepository.findUserTournamentByTournamentAndActiveTrue(tournament);
     }
 
+    public int countUserTournaments(Tournament tournament) {
+        return userTournamentRepository.countUserTournamentByTournamentAndActiveTrue(tournament);
+    }
 
     public Optional<UserTournament> findUserTournament(Long id) {
         return userTournamentRepository.findById(id);
