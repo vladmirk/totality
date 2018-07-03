@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tournament Result </title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <H3 th:text="${tournament.name}" class="mb-3">Турнир</H3>
+
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">Кто</th>
+            <th scope="col">Стоимость</th>
+            <th scope="col">Выигрыш</th>
+            <th scope="col">Баланс</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each=" resultItem : ${tournamentResultItems}">
+
+            <th scope="row"><span th:text="${resultItem.userName}"></span></th>
+
+            <td scope="row"><span th:text="${resultItem.cost}"></span></td>
+            <td scope="row"><span th:text="${resultItem.winAmount}"></span></td>
+            <td scope="row"><span th:text="${resultItem.balance()}"/></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

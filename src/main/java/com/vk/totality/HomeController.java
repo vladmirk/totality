@@ -3,6 +3,7 @@ package com.vk.totality;
 import com.vk.totality.acc.AccService;
 import com.vk.totality.acc.Bet;
 import com.vk.totality.acc.BetResultItem;
+import com.vk.totality.acc.TournamentResultItem;
 import com.vk.totality.game.*;
 import com.vk.totality.user.User;
 import com.vk.totality.user.UserService;
@@ -89,14 +90,24 @@ public class HomeController {
     public static final String ID = "{tournamentId:.+}";
 
     @GetMapping("/" + ID + "/" + GAME)
-    public String tournamentGames(@PathVariable Long tournamentId, Model model) {
-        Tournament tournament = gameService.findTournament(tournamentId);
+    public String tournamentGames(@PathVariable("tournamentId") Tournament tournament, Model model) {
         List<Game> games = gameService.findGamesByTournament(tournament);
         UserTournament userTournament = gameService.findUserTournament(user(), tournament);
         List<GameBet> gameBets = getGameBetList(games, userTournament);
         model.addAttribute("tournament", tournament);
         model.addAttribute("gameBets", gameBets);
+        model.addAttribute("userCount", gameService.countUserTournaments(tournament));
+
         return GAME + "index";
+    }
+
+    @GetMapping("/" + ID + "/tournamentResult")
+    public String tournamentResult(@PathVariable("tournamentId") Tournament tournament, Model model) {
+        List<TournamentResultItem> tournamentResultItems = accService.calcTournamentResult(tournament);
+        model.addAttribute("tournament", tournament);
+        model.addAttribute("tournamentResultItems", tournamentResultItems);
+
+        return GAME + "tournamentResult";
     }
 
     @GetMapping("/" + ID + "/" + GAME + "gameResult")
