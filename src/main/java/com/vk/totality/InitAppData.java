@@ -97,9 +97,9 @@ public class InitAppData {
     private List<Team> initTeams(TeamRepository teamRepository) {
         List<Team> teams = new ArrayList<>();
 
-        teams.add(teamRepository.save(new Team("Англия", true)));
-        teams.add(teamRepository.save(new Team("Германия", true)));
-        teams.add(teamRepository.save(new Team("Россия", true)));
+        teams.add(teamRepository.save(new Team("gb", "Англия", true)));
+        teams.add(teamRepository.save(new Team("de", "Германия", true)));
+        teams.add(teamRepository.save(new Team("ru", "Россия", true)));
         return teams;
     }
 

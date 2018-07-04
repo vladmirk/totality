@@ -2,6 +2,8 @@ package com.vk.totality.game;
 
 import com.vk.totality.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,14 +19,16 @@ public class GameService {
     private TeamRepository teamRepository;
     private UserTournamentRepository userTournamentRepository;
     private GameRepository gameRepository;
+    private ResourceLoader resource;
 
 
     @Autowired
-    public GameService(TournamentRepository tournamentRepository, TeamRepository teamRepository, UserTournamentRepository userTournamentRepository, final GameRepository gameRepository) {
+    public GameService(TournamentRepository tournamentRepository, TeamRepository teamRepository, UserTournamentRepository userTournamentRepository, final GameRepository gameRepository, ResourceLoader resource) {
         this.tournamentRepository = tournamentRepository;
         this.teamRepository = teamRepository;
         this.userTournamentRepository = userTournamentRepository;
         this.gameRepository = gameRepository;
+        this.resource = resource;
     }
 
     public Page<Tournament> findAllTournaments(Pageable pageable) {
@@ -107,4 +111,19 @@ public class GameService {
         return g.isPresent() ? g.get() : null;
     }
 
+    private final static String TEAM_ICON_ROOT = "img/teams/";
+
+    public Resource findOneImage(String name) {
+        String path = TEAM_ICON_ROOT + name;
+        for (String ext : new String[]{".png", ".jpg", ".jpeg", ".svg"}) {
+            Resource file = resource.getResource("file:" + path + ext);
+            if (file.exists())
+                return file;
+        }
+        return getDefaultTeamIcon();
+    }
+
+    public Resource getDefaultTeamIcon() {
+        return resource.getResource("file:" + TEAM_ICON_ROOT + "blank.jpg");
+    }
 }
