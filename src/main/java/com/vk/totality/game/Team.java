@@ -20,7 +20,8 @@ public class Team {
         setActive(true);
     }
 
-    public Team(String name, boolean active) {
+    public Team(String mnemonic, String name, boolean active) {
+        this.mnemonic = mnemonic;
         this.name = name;
         this.active = active;
     }
