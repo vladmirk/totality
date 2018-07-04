@@ -24,7 +24,7 @@
                         <tr>
                             <td align="right">
 
-                                <div class="input-group">
+                                <div class="d-flex justify-content-end">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><img align="left"
                                                                             th:src="@{'/img/teamIcon/' + ${gameBet.game.team1.mnemonic} + '/raw'}"/></span>
@@ -39,7 +39,7 @@
                             <td><h5 class="card-title text-center">&nbsp;:&nbsp;</h5></td>
                             <td align="left">
 
-                                <div class="input-group">
+                                <div class="d-flex">
                                     <input type="text" class="form-control int_value" name="score2"
                                            th:value="${gameBet.bet.score2}" style="width: 5ch"
                                            th:readonly="!${gameBet.canBet}">
