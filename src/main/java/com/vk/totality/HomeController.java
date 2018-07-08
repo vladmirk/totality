@@ -1,9 +1,6 @@
 package com.vk.totality;
 
-import com.vk.totality.acc.AccService;
-import com.vk.totality.acc.Bet;
-import com.vk.totality.acc.BetResultItem;
-import com.vk.totality.acc.TournamentResultItem;
+import com.vk.totality.acc.*;
 import com.vk.totality.game.*;
 import com.vk.totality.user.User;
 import com.vk.totality.user.UserService;
@@ -99,6 +96,9 @@ public class HomeController {
         model.addAttribute("tournament", tournament);
         model.addAttribute("gameBets", gameBets);
         model.addAttribute("userCount", gameService.countUserTournaments(tournament));
+        List<UserAccountOperationSummary> userAccountOperationSummaries = accService.calcAccBalance(tournament, userTournament.getUser());
+        if (userAccountOperationSummaries.size() == 1)
+            model.addAttribute("summary", userAccountOperationSummaries.get(0));
 
         return GAME + "index";
     }

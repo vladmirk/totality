@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Tournament Balance</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <H3 class="mb-5" th:text="${ut.getTournament().getName()}">Ваши дела такие:</H3>
+
+
+    <div th:replace="fragments/userAccBalance :: userAccBalance"/>
+</div>
+
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

@@ -16,6 +16,44 @@
             class="badge badge-secondary" th:text="${userCount} + ' участ.'"/></a></sup></h3>
     <div id="feedback"></div>
 
+
+    <div class="card-deck p-2 text-center rounded " th:if="${summary}">
+        <div class="card">
+            <p class="card-text p-2">
+                <span>В кассу:</span>
+                <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).CASH_IN)}"/>
+            </p>
+        </div>
+        <div class="card">
+            <p class="card-text p-2">
+                <span>На ставки:</span>
+                <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).BET_OUT)}"/>
+            </p>
+        </div>
+        <div class="card">
+            <p class="card-text  p-2">
+                <span>Выигрыш:</span>
+                <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).BET_WIN)}"/>
+            </p>
+        </div>
+        <div class="card">
+            <p class="card-text p-2">
+                <span>Из кассы:</span>
+                <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).CASH_OUT)}"/>
+            </p>
+        </div>
+        <div class="card">
+            <p class="card-text p-2 ">
+                <strong>
+                    <span>Баланс:</span>
+                    <a th:href="'/acc/userTournament/' + ${summary.getUserTournament().getId()}"><span
+                            th:text="${summary.getBalance()}"/></a>
+                </strong>
+            </p>
+        </div>
+    </div>
+    <p/>
+
     <div class="card-deck">
         <div th:each=" gameBet : ${gameBets} ">
 

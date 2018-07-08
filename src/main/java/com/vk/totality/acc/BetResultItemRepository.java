@@ -12,12 +12,10 @@ public interface BetResultItemRepository extends CrudRepository<BetResultItem, L
 
     BetResultItem findFirstByBet(Bet bet);
 
-    List<BetResultItem> findBetResultItemsByBetResult(BetResult betResult);
+    List<BetResultItem> findBetResultItemsByBetResultOrderByBet_UserTournament_User_UserLogin(BetResult betResult);
 
     Integer removeBetResultItemsByBetResult(BetResult betResult);
 
-    //order by 4 desc
-//    select u.user_login, sum(bti.win_amount) Win, sum(bti.rate) as Cost,  sum(bti.win_amount) -  sum(bti.rate)  Game_Balance
     @Query(" select new com.vk.totality.acc.TournamentResultItem(u.userLogin, sum(bti.winAmount), sum (bti.rate)) " +
             " from BetResultItem bti " +
             " inner join bti.bet b " +
@@ -29,5 +27,18 @@ public interface BetResultItemRepository extends CrudRepository<BetResultItem, L
     )
     List<TournamentResultItem> calcTournamentResult(@Param("tournament") Tournament tournament);
 
+    //t.name Tournament, u.user_login User, sum(a.amount) CASH_IN_Amount
+//    "order by 3,2"
+
+    @Query("select  new com.vk.totality.acc.UserAccountItemOperation(ut, a.accOperation,sum (a.amount)) " +
+            "FROM UserTournament ut " +
+            "inner join ut.tournament t on ut.active = 1 " +
+            "inner join ut.user u " +
+            "left join Account a on a.userTournament = ut " + //AND a.accOperation = 'CASH_IN' " +
+            "WHERE t  = :tournament AND  ut.active = 1  AND u.userLogin like :userLogin " +
+            "group by  ut, a.accOperation " +
+            "order by ut.user "
+    )
+    List<UserAccountItemOperation> calcTournamentBalances(@Param("tournament") Tournament tournament, @Param("userLogin") String userLogin);
 
 }

@@ -36,7 +36,7 @@
         <tr>
             <th scope="col">Ставка</th>
             <th scope="col">Кто</th>
-            <th scope="col">Выигрыш</th>
+            <th scope="col" class="text-right pr-5">Выигрыш</th>
             <th scope="col">Тип</th>
         </tr>
         </thead>
@@ -47,7 +47,7 @@
             <th scope="row" th:if="!${resultItem.winAmount > 0}"><span th:text="${resultItem.bet}"></span></th>
 
             <td scope="row"><span th:text="${resultItem.bet.userTournament.user}"></span></td>
-            <td scope="row"><span th:text="${resultItem.winAmount}"></span></td>
+            <td scope="row" class="text-right pr-5"><span th:text="${resultItem.winAmount}"></span></td>
             <td scope="row"><span th:text="${resultItem.betResultStatus}"/><span
                     th:if="${resultItem.betResultStatus.ratio() > 0} ">&nbsp;(<span
                     th:text="${resultItem.betResultStatus.percent()} "/>%)</span>

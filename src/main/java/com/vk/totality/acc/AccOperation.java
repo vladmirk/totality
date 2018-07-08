@@ -3,7 +3,8 @@ package com.vk.totality.acc;
 import static com.vk.totality.acc.AccOperation.type.C;
 import static com.vk.totality.acc.AccOperation.type.D;
 
-public enum AccOperation {
+public enum
+AccOperation {
     CASH_IN(D), CASH_OUT(C), BET_WIN(D), BET_OUT(C);
 
     private type debitCredit;

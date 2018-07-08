@@ -1,6 +1,7 @@
 package com.vk.totality.acc;
 
 import com.vk.totality.game.*;
+import com.vk.totality.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,7 +98,7 @@ public class AccService {
     }
 
     public List<BetResultItem> findBetResultItems(BetResult betResult) {
-        return betResultItemRepository.findBetResultItemsByBetResult(betResult);
+        return betResultItemRepository.findBetResultItemsByBetResultOrderByBet_UserTournament_User_UserLogin(betResult);
     }
 
     private void removeOldTransactions(BetResult betResult) {
@@ -210,5 +211,29 @@ public class AccService {
 
     public List<TournamentResultItem> calcTournamentResult(Tournament tournament) {
         return betResultItemRepository.calcTournamentResult(tournament);
+    }
+
+    public List<UserAccountOperationSummary> calcAccBalance(Tournament tournament) {
+        return calcAccBalance(tournament, null);
+    }
+
+    public List<UserAccountOperationSummary> calcAccBalance(Tournament tournament, User user) {
+        List<UserAccountOperationSummary> userOperations = new ArrayList();
+
+        List<UserAccountItemOperation> userAccountItemOperations = betResultItemRepository.calcTournamentBalances(tournament, user == null ? "%" : user.getUserLogin());
+        UserTournament currentUserTournament = null;
+        UserAccountOperationSummary summary = null;
+        for (UserAccountItemOperation o : userAccountItemOperations) {
+            if (currentUserTournament == null || !currentUserTournament.equals(o.getUserTournament())) {
+                summary = new UserAccountOperationSummary();
+                summary.setUserTournament(o.getUserTournament());
+                userOperations.add(summary);
+                currentUserTournament = summary.getUserTournament();
+            }
+            if (o.getAccOperation() != null)
+                summary.add(o.getAccOperation(), o.getAmount());
+        }
+
+        return userOperations;
     }
 }
