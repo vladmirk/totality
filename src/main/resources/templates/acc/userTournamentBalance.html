@@ -43,43 +43,10 @@
 
         <button type="submit" class="btn btn-primary mb-2">Submit</button>
     </form>
-    <hr/>
-    <h4>Balance <strong><span class="border border-info p-2 " th:text="${accountBalance.balanceAmount}"/></strong></h4>
 
     <hr/>
-    <h5>История операций</h5>
-    <table class="table table-striped table-sm">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Дата</th>
-            <th class="text-right  pr-5" scope="col">Сумма</th>
-            <th scope="col">Операция</th>
-            <th scope="col">Действия</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each=" acc : ${accounts} ">
-            <th scope="row" th:text="${acc.id}"/>
-            <td th:text="${acc.eventDate}">
-            <td class="text-right pr-5" th:text="${acc.amount}">
-            <td th:text="${acc.accOperation}">
-            <td>
-                <ul class=" nav">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{deleteAcc(id=${acc.id})}">Удалить</a>
-                    </li>
-                    <!--<li class="nav-item">-->
-                    <!--<a class="nav-link" th:href="@{${tor.id} + '/game/'}">Игры</a>-->
-                    <!--</li>-->
 
-                </ul>
-            </td>
-        </tr>
-
-        </tbody>
-    </table>
-
+    <div th:replace="fragments/userAccBalance :: userAccBalance"/>
 
 </div>
 

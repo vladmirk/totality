@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tournament Balance</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <h3 class="mb-5"><span th:text="${tournament.getName()}"/>
+    </h3>
+
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">Участник</th>
+            <th class="text-right  pr-5" scope="col">Внес в кассу</th>
+            <th class="text-right  pr-5" scope="col">Потратил</th>
+            <th class="text-right  pr-5" scope="col">Выиграл</th>
+            <th class="text-right  pr-5" scope="col">Получил из кассы</th>
+            <th class="text-right  pr-5" scope="col">Баланс</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each=" summary : ${accountItemOperationSummaries} ">
+            <td><a th:href="@{'/admin/acc/userTournament/' + ${summary.getUserTournament().getId()}}"><span
+                    th:text="${summary.getUser().getUserLogin()}"/> </a>
+            </td>
+            <td class="text-right pr-5" th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).CASH_IN)}"/>
+            <td class="text-right pr-5" th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).BET_OUT)}"/>
+            <td class="text-right pr-5" th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).BET_WIN)}"/>
+            <td class="text-right pr-5" th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).CASH_OUT)}"/>
+            <td class="text-right pr-5" th:text="${summary.getBalance()}"/>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+</div>
+
+
+<div th:replace="fragments/footer :: footer"/>
+<div th:replace="fragments/footer :: dateTimeJS"/>
+
+</body>
+</html>

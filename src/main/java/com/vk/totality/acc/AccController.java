@@ -2,6 +2,7 @@ package com.vk.totality.acc;
 
 import com.vk.totality.game.GameBet;
 import com.vk.totality.game.GameService;
+import com.vk.totality.game.Tournament;
 import com.vk.totality.game.UserTournament;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,9 +69,22 @@ public class AccController {
         model.addAttribute("accounts", accounts);
         model.addAttribute("accountBalance", calcBalance(accounts));
         model.addAttribute("accOperations", accService.accOperationsForMaintenance());
+        model.addAttribute("operations", true);
 
         return "acc/userTournamentBalance";
     }
+
+    @GetMapping("/acc/userTournament/" + UT_ID)
+    public String userOperationsBalance(@PathVariable("utId") UserTournament userTournament, Model model) {
+
+        model.addAttribute("ut", userTournament);
+        List<Account> accounts = accService.findAccounts(userTournament);
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("accountBalance", calcBalance(accounts));
+
+        return "acc/userAccBalance";
+    }
+
 
     private AccBalance calcBalance(List<Account> accounts) {
         BigDecimal bal = BigDecimal.ZERO;
@@ -100,6 +114,14 @@ public class AccController {
         }
 
         return "redirect:" + "/";
+    }
+
+    @GetMapping("/admin/tournament/" + ID + "/accBalance")
+    public String accountBalance(@PathVariable("tournamentId") Tournament tournament, Model model) {
+        List<UserAccountOperationSummary> accountItemOperationSummaries = accService.calcAccBalance(tournament);
+        model.addAttribute("accountItemOperationSummaries", accountItemOperationSummaries);
+        model.addAttribute("tournament", tournament);
+        return "acc/tournamentAccBalance";
     }
 
 }

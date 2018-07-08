@@ -18,8 +18,8 @@
         <tr>
             <th scope="col">Кто</th>
             <th scope="col">Стоимость</th>
-            <th scope="col">Выигрыш</th>
-            <th scope="col">Баланс</th>
+            <th scope="col" class="text-right pr-5">Выигрыш</th>
+            <th scope="col" class="text-right pr-5">Баланс</th>
         </tr>
         </thead>
         <tbody>
@@ -28,8 +28,8 @@
             <th scope="row"><span th:text="${resultItem.userName}"></span></th>
 
             <td scope="row"><span th:text="${resultItem.cost}"></span></td>
-            <td scope="row"><span th:text="${resultItem.winAmount}"></span></td>
-            <td scope="row"><span th:text="${resultItem.balance()}"/></td>
+            <td scope="row" class="text-right pr-5"><span th:text="${resultItem.winAmount}"></span></td>
+            <td scope="row" class="text-right pr-5"><span th:text="${resultItem.balance()}"/></td>
 
         </tr>
         </tbody>

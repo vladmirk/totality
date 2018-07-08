@@ -1,0 +1,39 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+<div th:fragment="userAccBalance">
+
+    <h4>Баланс <strong><span class="border border-info p-2 " th:text="${accountBalance.balanceAmount}"/></strong></h4>
+    <h5 class="pt-3">История операций</h5>
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">Дата</th>
+            <th class="text-right  pr-5" scope="col">Сумма</th>
+            <th scope="col">Операция</th>
+            <th scope="col" th:if="${operations}">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each=" acc : ${accounts} ">
+            <td th:text="${acc.eventDate}" class="pt-2">
+            <td class="text-right pr-5 pt-2" th:text="${acc.amount}">
+            <td th:text="${acc.accOperation}" class="pt-2">
+            <td th:if="${operations}">
+                <ul class=" nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{deleteAcc(id=${acc.id})}">Удалить</a>
+                    </li>
+
+                </ul>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
