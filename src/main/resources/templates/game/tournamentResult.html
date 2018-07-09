@@ -13,6 +13,18 @@
 <div class="container">
     <H3 th:text="${tournament.name}" class="mb-3">Турнир</H3>
 
+
+    <div class="card-deck p-2 text-center rounded " th:if="${tournamentBank}">
+        <div class="card">
+            <p class="card-text p-2">
+                <span>Банк:</span>
+                <span th:text="${tournamentBank}"/>
+            </p>
+        </div>
+    </div>
+    <p/>
+
+
     <table class="table table-striped table-sm">
         <thead>
         <tr>

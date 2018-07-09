@@ -121,6 +121,7 @@ public class AccController {
         List<UserAccountOperationSummary> accountItemOperationSummaries = accService.calcAccBalance(tournament);
         model.addAttribute("accountItemOperationSummaries", accountItemOperationSummaries);
         model.addAttribute("tournament", tournament);
+        model.addAttribute("tournamentBalance", accService.calcTournamentBalance(accountItemOperationSummaries));
         return "acc/tournamentAccBalance";
     }
 

@@ -213,8 +213,26 @@ public class AccService {
         return betResultItemRepository.calcTournamentResult(tournament);
     }
 
+    public BigDecimal calcTournamentTotalBalance(List<TournamentResultItem> resultItems) {
+        BigDecimal sum = BigDecimal.ZERO;
+        for (TournamentResultItem item : resultItems) {
+            sum = sum.add(item.balance().negate());
+        }
+        return sum;
+    }
+
     public List<UserAccountOperationSummary> calcAccBalance(Tournament tournament) {
         return calcAccBalance(tournament, null);
+    }
+
+    public TournamentBalance calcTournamentBalance(List<UserAccountOperationSummary> summaries) {
+        TournamentBalance balance = new TournamentBalance();
+        for (UserAccountOperationSummary summary : summaries) {
+            balance.addToBePaid(summary.getToBePaidOutAmount());
+            balance.addGetMoney(summary.getPaymentMissing());
+            balance.addActual(summary.getCashBalance());
+        }
+        return balance;
     }
 
     public List<UserAccountOperationSummary> calcAccBalance(Tournament tournament, User user) {

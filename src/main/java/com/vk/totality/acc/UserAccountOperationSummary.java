@@ -42,6 +42,25 @@ public class UserAccountOperationSummary {
         return accOperationMap.get(accOperation);
     }
 
+
+    public BigDecimal getJackPot() {
+        return getAmount(AccOperation.BET_OUT).add(getAmount(AccOperation.BET_WIN));
+    }
+
+    public BigDecimal getCashBalance() {
+        return getAmount(AccOperation.CASH_IN).add(getAmount(AccOperation.CASH_OUT));
+    }
+
+
+    public BigDecimal getToBePaidOutAmount() {
+        return BigDecimal.ZERO.compareTo(getBalance()) > 0 ? BigDecimal.ZERO : getBalance();
+    }
+
+    public BigDecimal getPaymentMissing() {
+        return BigDecimal.ZERO.compareTo(getBalance()) < 0 ? BigDecimal.ZERO : getBalance().abs();
+    }
+
+
     public BigDecimal getBalance() {
         BigDecimal balance = BigDecimal.ZERO;
         for (AccOperation acc : AccOperation.values()) {

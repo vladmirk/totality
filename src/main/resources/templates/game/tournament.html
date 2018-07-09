@@ -33,12 +33,11 @@
                         <a class="nav-link" th:href="@{edit(id=${tor.id})}">Править</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{${tor.id} + '/game/'}">Игры</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" th:href="'/admin/tournament/' + @{${tor.id} + '/accBalance'}">Финансы</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{${tor.id} + '/game/'}">Игры</a>
+                    </li>
                 </ul>
             </td>
         </tr>

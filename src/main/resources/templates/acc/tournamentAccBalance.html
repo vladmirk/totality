@@ -14,6 +14,35 @@
     <h3 class="mb-5"><span th:text="${tournament.getName()}"/>
     </h3>
 
+    <div class="card-deck p-2 text-center rounded " th:if="${tournamentBalance}">
+        <div class="card">
+            <p class="card-text p-2">
+                <span>В кассе:</span>
+                <span th:text="${tournamentBalance.getActual()}"/>
+            </p>
+        </div>
+        <div class="card">
+            <p class="card-text p-2">
+                <span>К выплате:</span>
+                <span th:text="${tournamentBalance.getToBePaidOut()}"/>
+            </p>
+        </div>
+        <div class="card">
+            <p class="card-text p-2">
+                <span>К взысканию:</span>
+                <span th:text="${tournamentBalance.getToGetMoney()}"/>
+            </p>
+        </div>
+        <div class="card">
+            <p class="card-text p-2">
+                <span>Банк турнира:</span>
+                <span th:text="${tournamentBalance.getBank()}"/>
+            </p>
+        </div>
+    </div>
+    <p/>
+
+
     <table class="table table-striped table-sm">
         <thead>
         <tr>
