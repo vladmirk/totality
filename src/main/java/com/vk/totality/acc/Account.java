@@ -89,4 +89,8 @@ public class Account {
         else
             amount = getAmount().abs().negate();
     }
+
+    public BetResultItem getBetResultItem() {
+        return betResultItem;
+    }
 }

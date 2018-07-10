@@ -108,7 +108,7 @@ public class HomeController {
         List<TournamentResultItem> tournamentResultItems = accService.calcTournamentResult(tournament);
         model.addAttribute("tournament", tournament);
         model.addAttribute("tournamentResultItems", tournamentResultItems);
-
+        model.addAttribute("tournamentBank", accService.calcTournamentTotalBalance(tournamentResultItems));
         return GAME + "tournamentResult";
     }
 

@@ -13,6 +13,7 @@
             <th scope="col">Дата</th>
             <th class="text-right  pr-5" scope="col">Сумма</th>
             <th scope="col">Операция</th>
+            <th scope="col">Игра</th>
             <th scope="col" th:if="${operations}">Действия</th>
         </tr>
         </thead>
@@ -21,6 +22,7 @@
             <td th:text="${acc.eventDate}" class="pt-2">
             <td class="text-right pr-5 pt-2" th:text="${acc.amount}">
             <td th:text="${acc.accOperation}" class="pt-2">
+            <td th:text="${acc.betResultItem?.betResult?.game}" class="pt-2">
             <td th:if="${operations}">
                 <ul class=" nav">
                     <li class="nav-item">
