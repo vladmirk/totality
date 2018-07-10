@@ -24,105 +24,105 @@ import static com.vk.totality.game.GameController.GAME;
 @Controller
 public class AccController {
 
-    private AccService accService;
-    private GameService gameService;
+  private AccService accService;
+  private GameService gameService;
 
-    @Autowired
-    public AccController(AccService accService, GameService gameService) {
-        this.accService = accService;
-        this.gameService = gameService;
+  @Autowired
+  public AccController(AccService accService, GameService gameService) {
+    this.accService = accService;
+    this.gameService = gameService;
+  }
+
+  public static final String ID = "{tournamentId:.+}";
+
+  @PostMapping("/" + ID + "/" + GAME + "setBet")
+  public String setBet(Bet bet, Model model) {
+    Optional<Bet> found = accService.findBetById(bet.getId());
+    if (!found.isPresent())
+      throw new RuntimeException("Нет такой ставки " + bet.toString());
+
+    Bet existing = found.get();
+    GameBet gb = new GameBet(existing, existing.getGame(), accService.findBetResultItem(existing), null);
+
+    if (gb.getCanBet()) {
+      existing.setScore1(bet.getScore1());
+      existing.setScore2(bet.getScore2());
+      existing.setBetDate(new Date());
+      existing = accService.save(existing);
     }
+    gb.setGameBetStatistics(accService.calcGameBetStatistics(existing.getGame()));
+    model.addAttribute("gameBet", gb);
+    return "fragments/cardForm :: cardViewForm";
+  }
 
-    public static final String ID = "{tournamentId:.+}";
+  public static final String UT_ID = "{utId:.+}";
+  public static final String ACC_PATH = "/admin/acc/userTournament/" + UT_ID;
 
-    @PostMapping("/" + ID + "/" + GAME + "setBet")
-    public String setBet(Bet bet, Model model) {
-        Optional<Bet> found = accService.findBetById(bet.getId());
-        if (!found.isPresent())
-            throw new RuntimeException("Нет такой ставки " + bet.toString());
+  @GetMapping(ACC_PATH)
+  public String userBalance(@PathVariable Long utId, Model model) {
+    Optional<UserTournament> userTournament = gameService.findUserTournament(utId);
+    if (!userTournament.isPresent())
+      throw new RuntimeException("Cannot find User Tournament for id " + utId);
 
-        Bet existing = found.get();
-        GameBet gb = new GameBet(existing, existing.getGame(), accService.findBetResultItem(existing));
+    model.addAttribute("ut", userTournament.get());
+    List<Account> accounts = accService.findAccounts(userTournament.get());
+    model.addAttribute("accounts", accounts);
+    model.addAttribute("accountBalance", calcBalance(accounts));
+    model.addAttribute("accOperations", accService.accOperationsForMaintenance());
+    model.addAttribute("operations", true);
 
-        if (gb.getCanBet()) {
-            existing.setScore1(bet.getScore1());
-            existing.setScore2(bet.getScore2());
-            existing.setBetDate(new Date());
-            existing = accService.save(existing);
-        }
+    return "acc/userTournamentBalance";
+  }
 
-        model.addAttribute("gameBet", gb);
-        return "fragments/cardForm :: cardViewForm";
+  @GetMapping("/acc/userTournament/" + UT_ID)
+  public String userOperationsBalance(@PathVariable("utId") UserTournament userTournament, Model model) {
+
+    model.addAttribute("ut", userTournament);
+    List<Account> accounts = accService.findAccounts(userTournament);
+    model.addAttribute("accounts", accounts);
+    model.addAttribute("accountBalance", calcBalance(accounts));
+
+    return "acc/userAccBalance";
+  }
+
+
+  private AccBalance calcBalance(List<Account> accounts) {
+    BigDecimal bal = BigDecimal.ZERO;
+    for (Account a : accounts) {
+      bal = bal.add(a.getAmount());
     }
+    return new AccBalance(bal);
+  }
 
-    public static final String UT_ID = "{utId:.+}";
-    public static final String ACC_PATH = "/admin/acc/userTournament/" + UT_ID;
-
-    @GetMapping(ACC_PATH)
-    public String userBalance(@PathVariable Long utId, Model model) {
-        Optional<UserTournament> userTournament = gameService.findUserTournament(utId);
-        if (!userTournament.isPresent())
-            throw new RuntimeException("Cannot find User Tournament for id " + utId);
-
-        model.addAttribute("ut", userTournament.get());
-        List<Account> accounts = accService.findAccounts(userTournament.get());
-        model.addAttribute("accounts", accounts);
-        model.addAttribute("accountBalance", calcBalance(accounts));
-        model.addAttribute("accOperations", accService.accOperationsForMaintenance());
-        model.addAttribute("operations", true);
-
-        return "acc/userTournamentBalance";
-    }
-
-    @GetMapping("/acc/userTournament/" + UT_ID)
-    public String userOperationsBalance(@PathVariable("utId") UserTournament userTournament, Model model) {
-
-        model.addAttribute("ut", userTournament);
-        List<Account> accounts = accService.findAccounts(userTournament);
-        model.addAttribute("accounts", accounts);
-        model.addAttribute("accountBalance", calcBalance(accounts));
-
-        return "acc/userAccBalance";
-    }
-
-
-    private AccBalance calcBalance(List<Account> accounts) {
-        BigDecimal bal = BigDecimal.ZERO;
-        for (Account a : accounts) {
-            bal = bal.add(a.getAmount());
-        }
-        return new AccBalance(bal);
-    }
-
-    @PostMapping(ACC_PATH + "/addAccountOperation")
-    public String addAccOperation(@PathVariable Long utId, @Valid Account account, BindingResult bindingResult, Model model) {
-        if (!bindingResult.hasErrors()) {
+  @PostMapping(ACC_PATH + "/addAccountOperation")
+  public String addAccOperation(@PathVariable Long utId, @Valid Account account, BindingResult bindingResult, Model model) {
+    if (!bindingResult.hasErrors()) {
 //            assert utId.equals(account.getUserTournament().getId());
 
-            account.setEventDate(new Date());
-            accService.save(account);
-        }
-        return "redirect:" + "/admin/acc/userTournament/" + utId;
+      account.setEventDate(new Date());
+      accService.save(account);
+    }
+    return "redirect:" + "/admin/acc/userTournament/" + utId;
+  }
+
+  @GetMapping("/admin/acc/userTournament/deleteAcc")
+  public String deleteUSAccountItem(@RequestParam("id") Long id) {
+    Optional<Account> account = accService.findAccountById(id);
+    if (account.isPresent()) {
+      accService.deleteAccount(account.get());
+      return "redirect:" + "/admin/acc/userTournament/" + account.get().getUserTournament().getId();
     }
 
-    @GetMapping("/admin/acc/userTournament/deleteAcc")
-    public String deleteUSAccountItem(@RequestParam("id") Long id) {
-        Optional<Account> account = accService.findAccountById(id);
-        if (account.isPresent()) {
-            accService.deleteAccount(account.get());
-            return "redirect:" + "/admin/acc/userTournament/" + account.get().getUserTournament().getId();
-        }
+    return "redirect:" + "/";
+  }
 
-        return "redirect:" + "/";
-    }
-
-    @GetMapping("/admin/tournament/" + ID + "/accBalance")
-    public String accountBalance(@PathVariable("tournamentId") Tournament tournament, Model model) {
-        List<UserAccountOperationSummary> accountItemOperationSummaries = accService.calcAccBalance(tournament);
-        model.addAttribute("accountItemOperationSummaries", accountItemOperationSummaries);
-        model.addAttribute("tournament", tournament);
-        model.addAttribute("tournamentBalance", accService.calcTournamentBalance(accountItemOperationSummaries));
-        return "acc/tournamentAccBalance";
-    }
+  @GetMapping("/admin/tournament/" + ID + "/accBalance")
+  public String accountBalance(@PathVariable("tournamentId") Tournament tournament, Model model) {
+    List<UserAccountOperationSummary> accountItemOperationSummaries = accService.calcAccBalance(tournament);
+    model.addAttribute("accountItemOperationSummaries", accountItemOperationSummaries);
+    model.addAttribute("tournament", tournament);
+    model.addAttribute("tournamentBalance", accService.calcTournamentBalance(accountItemOperationSummaries));
+    return "acc/tournamentAccBalance";
+  }
 
 }
