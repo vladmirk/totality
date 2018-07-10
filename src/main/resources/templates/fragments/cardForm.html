@@ -56,7 +56,8 @@
               <p class="card-text mt=4"><span th:text="${gameBet.game.rate}" />&nbsp;<span>₽</span></p>
             </div>
           </div>
-          <div class="progress" style="height: 3px;" data-toggle="tooltip" title="Сделано ставок (%)">
+          <div class="progress" style="height: 3px;" data-toggle="tooltip"
+               th:title="'Сделано ставок: ' + ${gameBet.gameBetStatistics?.betFilledCount} + ' из ' + ${gameBet.gameBetStatistics?.betCount}">
             <div class="progress-bar" role="progressbar"
                  th:style="'width:' + ${gameBet.gameBetStatistics?.getPercentage()} + '%'"
                  aria-valuemin="0"
