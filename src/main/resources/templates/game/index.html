@@ -1,120 +1,115 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <title>Games</title>
 
-    <div th:replace="fragments/header :: header-css"/>
+    <div th:replace="fragments/header :: header-css" />
 
-</head>
-<body>
+  </head>
+  <body>
 
-<div th:replace="fragments/header :: header"/>
+    <div th:replace="fragments/header :: header" />
 
-<div class="container">
-    <h3><span class="" th:text="'Турнир ' + ${tournament.name}"/> &nbsp;<sup><a
-            th:href="'/'+${tournament.id} + '/tournamentResult'"><span
-            class="badge badge-secondary" th:text="${userCount} + ' участ.'"/></a></sup></h3>
-    <div id="feedback"></div>
+    <div class="container">
+      <h3><span class="" th:text="'Турнир ' + ${tournament.name}" /> &nbsp;<sup><a
+          th:href="'/'+${tournament.id} + '/tournamentResult'">Турнир<span
+          class="badge badge-secondary" th:text="${userCount} + ' участ.'" /></a></sup></h3>
+      <div id="feedback"></div>
 
-
-    <div class="card-deck p-2 text-center rounded " th:if="${summary}">
+      <div class="card-deck p-2 text-center rounded " th:if="${summary}">
         <div class="card">
-            <p class="card-text p-2">
-                <span>В кассу:</span>
-                <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).CASH_IN)}"/>
-            </p>
+          <p class="card-text p-2">
+            <span>В кассу:</span>
+            <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).CASH_IN)}" />
+          </p>
         </div>
         <div class="card">
-            <p class="card-text p-2">
-                <span>На ставки:</span>
-                <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).BET_OUT)}"/>
-            </p>
+          <p class="card-text p-2">
+            <span>На ставки:</span>
+            <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).BET_OUT)}" />
+          </p>
         </div>
         <div class="card">
-            <p class="card-text  p-2">
-                <span>Выигрыш:</span>
-                <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).BET_WIN)}"/>
-            </p>
+          <p class="card-text  p-2">
+            <span>Выигрыш:</span>
+            <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).BET_WIN)}" />
+          </p>
         </div>
         <div class="card">
-            <p class="card-text  p-2">
-                <span>Куш:</span>
-                <span th:text="${summary.getJackPot()}"/>
-            </p>
+          <p class="card-text  p-2">
+            <span>Куш:</span>
+            <span th:text="${summary.getJackPot()}" />
+          </p>
         </div>
         <div class="card">
-            <p class="card-text p-2">
-                <span>Из кассы:</span>
-                <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).CASH_OUT)}"/>
-            </p>
+          <p class="card-text p-2">
+            <span>Из кассы:</span>
+            <span th:text="${summary.getAmount(T(com.vk.totality.acc.AccOperation).CASH_OUT)}" />
+          </p>
         </div>
         <div class="card">
-            <p class="card-text p-2 ">
-                <strong>
-                    <span>На счете:</span>
-                    <a th:href="'/acc/userTournament/' + ${summary.getUserTournament().getId()}"><span
-                            th:text="${summary.getBalance()}"/></a>
-                </strong>
-            </p>
+          <p class="card-text p-2 ">
+            <strong>
+              <span>На счете:</span>
+              <a th:href="'/acc/userTournament/' + ${summary.getUserTournament().getId()}"><span
+                  th:text="${summary.getBalance()}" /></a>
+            </strong>
+          </p>
         </div>
-    </div>
-    <p/>
+      </div>
+      <p />
 
-    <div class="card-deck">
+      <div class="card-deck">
         <div th:each=" gameBet : ${gameBets} ">
 
-            <div th:replace="fragments/cardForm :: cardViewForm"/>
+          <div th:replace="fragments/cardForm :: cardViewForm" />
         </div>
+      </div>
+
     </div>
 
-
-</div>
-
-
-<script>
-    function createBet(gameID) {
+    <script>
+      function createBet(gameID) {
         // this is the id of the form
         var formID = '#game' + gameID;
         var cardId = '#card' + gameID;
         $(formID).submit(function (e) {
 
-            var url = "setBet"; // the script where you handle the form input.
+          var url = "setBet"; // the script where you handle the form input.
 
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: $(formID).serialize(), // serializes the form's elements.
-                success: function (data) {
-                    // display(data); // show response from the php script.
-                    $(cardId).html(data);
-                },
-                error: function (e) {
-                    console.log("ERROR: ", e);
-                    display(e);
-                },
-                done: function (e) {
-                    console.log("DONE");
-                    // enableSearchButton(true);
-                }
-            });
+          $.ajax({
+            type: "POST",
+            url: url,
+            data: $(formID).serialize(), // serializes the form's elements.
+            success: function (data) {
+              // display(data); // show response from the php script.
+              $(cardId).html(data);
+            },
+            error: function (e) {
+              console.log("ERROR: ", e);
+              display(e);
+            },
+            done: function (e) {
+              console.log("DONE");
+              // enableSearchButton(true);
+            }
+          });
 
-            e.preventDefault(); // avoid to execute the actual submit of the form.
+          e.preventDefault(); // avoid to execute the actual submit of the form.
         });
-    }
+      }
 
 
-    function display(data) {
+      function display(data) {
         var json = "<h4>Ajax Response</h4><pre>"
-            + JSON.stringify(data, null, 4) + "</pre>";
+          + JSON.stringify(data, null, 4) + "</pre>";
         $('#feedback').html(json);
-    }
+      }
 
+    </script>
 
-</script>
+    <div th:replace="fragments/footer :: footer" />
+    <div th:replace="fragments/footer :: dateTimeJS" />
 
-
-<div th:replace="fragments/footer :: footer"/>
-<div th:replace="fragments/footer :: dateTimeJS"/>
-
-</body>
+  </body>
 </html>
