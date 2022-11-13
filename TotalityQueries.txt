@@ -1,0 +1,8 @@
+select t.name Tournament, u.user_login User, sum(a.amount) CASH_IN_Amount  FROM USER_TOURNAMENT ut 
+inner join TOURNAMENT t on t.id = ut.tournament_id and ut.active = 1
+inner join USER u on u.id = ut.user_id
+left join  ACCOUNT a on ut.id = a.user_tournament_id AND  a.acc_operation = 'CASH_IN'
+WHERE t.id = 35 AND  ut.active = 1 
+group by t.name, u.user_login
+order by 3,2
+

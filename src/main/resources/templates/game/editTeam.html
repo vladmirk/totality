@@ -22,6 +22,12 @@
             <input type="text" class="form-control" id="name" placeholder="Кубок Чемпионов" th:field="*{name}">
         </div>
         <div class="form-group">
+            <label for="mnemonic">Мнемоник</label>
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('mnemonic')}"
+                 th:errors="*{mnemonic}"></div>
+            <input type="text" class="form-control" id="mnemonic" placeholder="RU" th:field="*{mnemonic}">
+        </div>
+        <div class="form-group">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="active" th:field="*{active}">
                 <label class="form-check-label" for="active">Активный</label>
