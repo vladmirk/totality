@@ -23,7 +23,7 @@ public class TotalityUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUserLoginAndActiveTrue(username);
+        User user = userRepository.findByUserLoginIgnoreCaseAndActiveTrue(username);
 
         if (user == null)
             throw new UsernameNotFoundException(username + "doesn't exist");
