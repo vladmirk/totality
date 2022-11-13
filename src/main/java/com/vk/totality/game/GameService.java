@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -37,7 +40,16 @@ public class GameService {
 
 
     public Page<Team> findAllTeams(Pageable pageable) {
+        if (pageable.isPaged()) {
+            pageable = PageRequest.of(pageable.getPageNumber(), 100, getTeamSorter());
+        } else {
+            pageable = PageRequest.of(0, Integer.MAX_VALUE, getTeamSorter());
+        }
         return teamRepository.findAll(pageable);
+    }
+
+    private Sort getTeamSorter() {
+        return Sort.by(Sort.Direction.ASC, "name");
     }
 
     public List<Tournament> findAllActiveTournaments() {

@@ -8,5 +8,7 @@ public interface TeamRepository extends PagingAndSortingRepository<Team, Long> {
 
     Page<Team> findAllByActiveTrue(Pageable pageable);
 
+    Page<Team> findAll(Pageable pageable);
+
     Team findTournamentById(Long id);
 }
